@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">CharacterPicker</string>
     <string name="button_save">SAVE</string>
+    <string name="sex_prompt">Choose a sex</string>
+    <string name="name_textView">Name:</string>
+    <string name="age_textView">Age:\t\t\t</string>
+    <string name="sex_textView">Sex:\t\t\t\t</string>
+    <string name="description_textView">Description:</string>
+    <string name="enter_a_name_editText">Enter a name...</string>
+    <string name="enter_an_age_editText">Enter an age...</string>
+    <string name="enter_a_description_editText">Enter a description...</string>
+
+    <string-array name="sex_array">
+        <item>"Male"</item>
+        <item>"Female"</item>
+        <item>"Non-Binary"</item>
+    </string-array>
 </resources>

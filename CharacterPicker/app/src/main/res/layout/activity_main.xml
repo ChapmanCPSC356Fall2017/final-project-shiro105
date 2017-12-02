@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cpsc356.characterpicker.Activities.MainActivity">
+    tools:context="cpsc356.characterpicker.Activities.SingleFragmentActivity">
 
     <LinearLayout
         android:id="@+id/FragmentHolder"
@@ -21,5 +21,6 @@
     References:
     https://stackoverflow.com/questions/25610727/adding-external-library-in-android-studio
     My ItemList project
+    https://www.mkyong.com/android/android-spinner-drop-down-list-example/
 
 -->

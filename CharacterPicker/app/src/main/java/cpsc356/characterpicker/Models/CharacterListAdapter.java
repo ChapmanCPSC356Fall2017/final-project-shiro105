@@ -1,0 +1,40 @@
+package cpsc356.characterpicker.Models;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import cpsc356.characterpicker.R;
+
+/**
+ * Created by matthewshiroma on 12/1/17.
+ *
+ *  This class helps display the cells that the RecycleView displays.
+ */
+
+public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHolder>{
+
+    // Inflates each cell into each position
+    @Override
+    public CharacterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflator = LayoutInflater.from(parent.getContext());
+        View v = inflator.inflate(R.layout.cell_character_list, parent, false);
+        CharacterViewHolder holder = new CharacterViewHolder(v);
+
+        return holder;
+    }
+
+    // We display the information each cell has to each CopyAbility
+    @Override
+    public void onBindViewHolder(CharacterViewHolder holder, int position) {
+        CharacterEntity currentCharacter = CharacterCollection.GetInstance().getListOfCharacters().get(position);
+        holder.DisplayCharacterProfile(currentCharacter);
+    }
+
+    // This gets the size of the RecycleList
+    @Override
+    public int getItemCount() {
+        return CharacterCollection.GetInstance().getListOfCharacters().size();
+    }
+}
