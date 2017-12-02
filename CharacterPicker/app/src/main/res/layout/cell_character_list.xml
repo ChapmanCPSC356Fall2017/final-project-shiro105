@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="5dp"
+    >
+
+    <ImageView
+        android:id="@+id/cell_profileImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/image_kirby"
+        />
+
+    <TextView
+        android:id="@+id/cell_nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Blah"
+        android:textSize="20sp"
+
+        android:maxLines="1"
+        android:maxLength="19"
+        android:ellipsize="end"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/cell_profileImageView"
+        android:layout_centerInParent="true"
+        />
+
+    <ImageView
+        android:id="@+id/cell_ratingImage_View"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_favorite_red_24dp"
+
+        android:layout_toStartOf="@id/cell_ratingTextView"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        />
+
+    <TextView
+        android:id="@+id/cell_ratingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="10.5"
+        android:textSize="20sp"
+        android:textColor="@android:color/holo_red_dark"
+
+        android:layout_toStartOf="@id/cell_moveImageView"
+        android:layout_centerInParent="true"
+        />
+
+    <ImageView
+        android:id="@+id/cell_moveImageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_reorder_black_24dp"
+        android:layout_margin="10dp"
+
+        android:layout_alignEnd="@id/cell_nameTextView"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>

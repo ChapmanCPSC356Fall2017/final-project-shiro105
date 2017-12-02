@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CharacterPicker</string>
+    <string name="button_save">SAVE</string>
 </resources>
