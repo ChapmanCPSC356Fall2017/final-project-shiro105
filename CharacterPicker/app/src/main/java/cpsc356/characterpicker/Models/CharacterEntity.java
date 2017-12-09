@@ -1,5 +1,7 @@
 package cpsc356.characterpicker.Models;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.UUID;
 
 import cpsc356.characterpicker.R;
@@ -12,13 +14,19 @@ import cpsc356.characterpicker.R;
 
 public class CharacterEntity {
 
+    private static final String FIVE_STAR_KEY = "Five";
+    private static final String FOUR_STAR_KEY = "Four";
+    private static final String THREE_STAR_KEY = "Three";
+    private static final String TWO_STAR_KEY = "Two";
+    private static final String ONE_STAR_KEY = "One";
+
     private String id;
     private String name;
     private int age;
     private String description;
-    private float averageRating;
     private int profilePictureID;
     private int sexImageID;         // Holds the current sex of the character. Also defines what sex they are
+    private Dictionary<String, Integer> categoricalRatings;    // Holds all of the data for the character's ratings
 
     // Use this constructor if you don't want to set an image ID by default
     public CharacterEntity(String name, int age, String sex, String description)
@@ -29,8 +37,8 @@ public class CharacterEntity {
         setDescription(description);
 
         id = UUID.randomUUID().toString();
-        averageRating = 0.0f;
-        profilePictureID = R.drawable.image_defaultPic;
+        profilePictureID = R.drawable.image_defaultpic;
+        categoricalRatings = new Hashtable<String, Integer>();
     }
 
     // If you have an image to use for the profile pic, use this one
@@ -42,8 +50,8 @@ public class CharacterEntity {
         setDescription(description);
 
         id = UUID.randomUUID().toString();
-        averageRating = 0.0f;
         profilePictureID = picId;
+        categoricalRatings = new Hashtable<String, Integer>();
     }
 
     public String getId() {
@@ -62,8 +70,60 @@ public class CharacterEntity {
         return description;
     }
 
+    // Returns the weighted average of all of the ratings. Returns 0 if a rating cannot be calculated
     public float getAverageRating() {
-        return averageRating;
+        float fiveStarAmount = 0f;
+        float fourStarAmount = 0f;
+        float threeStarAmount = 0f;
+        float twoStarAmount = 0f;
+        float oneStarAmount = 0f;
+        float fiveStarWeight = 0f;
+        float fourStarWeight = 0f;
+        float threeStarWeight = 0f;
+        float twoStarWeight = 0f;
+        float oneStarWeight = 0f;
+
+        // We do a check to see if the values exist in the dictionary
+        if(categoricalRatings.get(FIVE_STAR_KEY) != null)
+        {
+            fiveStarAmount = categoricalRatings.get(FIVE_STAR_KEY);
+            fiveStarWeight = fiveStarAmount * 5.0f;
+        }
+        if(categoricalRatings.get(FOUR_STAR_KEY) != null)
+        {
+            fourStarAmount = categoricalRatings.get(FOUR_STAR_KEY);
+            fourStarWeight = fourStarAmount * 4.0f;
+        }
+        if(categoricalRatings.get(THREE_STAR_KEY) != null)
+        {
+            threeStarAmount = categoricalRatings.get(THREE_STAR_KEY);
+            threeStarWeight = threeStarAmount * 3.0f;
+        }
+        if(categoricalRatings.get(TWO_STAR_KEY) != null)
+        {
+            twoStarAmount = categoricalRatings.get(TWO_STAR_KEY);
+            twoStarWeight = twoStarAmount * 2.0f;
+        }
+        if(categoricalRatings.get(ONE_STAR_KEY) != null)
+        {
+            oneStarAmount = categoricalRatings.get(ONE_STAR_KEY);
+            oneStarWeight = oneStarAmount;
+        }
+
+        // We check to see if the amounts give a proper value.
+        if((fiveStarAmount + fourStarAmount + threeStarAmount + twoStarAmount + oneStarAmount) == 0)
+        {
+            return 0f;
+        }
+        else
+        {
+            float result = (fiveStarWeight + fourStarWeight + threeStarWeight + twoStarWeight + oneStarWeight) / (fiveStarAmount + fourStarAmount + threeStarAmount + twoStarAmount + oneStarAmount);
+            if(result >= 5.0f)
+            {
+                return 5.0f;
+            }
+            return result;
+        }
     }
 
     public int getProfilePictureID() {
@@ -110,11 +170,71 @@ public class CharacterEntity {
         this.description = description;
     }
 
-    public void setAverageRating(float averageRating) {
-        if(averageRating > 0)
-        {
-            this.averageRating = averageRating;
-        }
+    // Takes in a rating and stores it in the dictionary
+    public void setNewRating(int newRating) {
+       int newAmount = 0;
+
+       // We have to check if this key exists. If not, we need to do a different logic step
+       switch(newRating)
+       {
+           case 5:
+               if(categoricalRatings.get(FIVE_STAR_KEY) != null)
+               {
+                   newAmount = categoricalRatings.get(FIVE_STAR_KEY) + 1;
+                   categoricalRatings.put(FIVE_STAR_KEY, newAmount);
+               }
+               else
+               {
+                   categoricalRatings.put(FIVE_STAR_KEY, 1);
+               }
+               break;
+           case 4:
+               if(categoricalRatings.get(FOUR_STAR_KEY) != null)
+               {
+                   newAmount = categoricalRatings.get(FOUR_STAR_KEY) + 1;
+                   categoricalRatings.put(FOUR_STAR_KEY, newAmount);
+               }
+               else
+               {
+                   categoricalRatings.put(FOUR_STAR_KEY, 1);
+               }
+               break;
+           case 3:
+               if(categoricalRatings.get(THREE_STAR_KEY) != null)
+               {
+                   newAmount = categoricalRatings.get(THREE_STAR_KEY) + 1;
+                   categoricalRatings.put(THREE_STAR_KEY, newAmount);
+               }
+               else
+               {
+                   categoricalRatings.put(THREE_STAR_KEY, 1);
+               }
+               break;
+           case 2:
+               if(categoricalRatings.get(TWO_STAR_KEY) != null)
+               {
+                   newAmount = categoricalRatings.get(TWO_STAR_KEY) + 1;
+                   categoricalRatings.put(TWO_STAR_KEY, newAmount);
+               }
+               else
+               {
+                   categoricalRatings.put(TWO_STAR_KEY, 1);
+               }
+               break;
+           case 1:
+               if(categoricalRatings.get(ONE_STAR_KEY) != null)
+               {
+                   newAmount = categoricalRatings.get(ONE_STAR_KEY) + 1;
+                   categoricalRatings.put(ONE_STAR_KEY, newAmount);
+               }
+               else
+               {
+                   categoricalRatings.put(ONE_STAR_KEY, 1);
+               }
+               newAmount = categoricalRatings.get(ONE_STAR_KEY) + 1;
+               categoricalRatings.put(ONE_STAR_KEY, newAmount);
+               break;
+       }
     }
 
     // Returns a string form of the sex

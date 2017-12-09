@@ -3,7 +3,6 @@ package cpsc356.characterpicker.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +44,7 @@ public class ViewSingleCharacterFragment extends Fragment {
     private RatingBar characterCurrentRating;
 
     private CharacterEntity currentCharacter;
+    private int newRating;
 
     // We first get the character data
     @Override
@@ -89,10 +89,20 @@ public class ViewSingleCharacterFragment extends Fragment {
         characterCurrentRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                // TODO: IMPLEMENT USING THIS
+                if(v != newRating)
+                {
+                    newRating = (int)v;
+                }
             }
         });
 
         return currView;
+    }
+
+    // When the user goes back to the previous screen, we do the math on the rating and set it.
+    @Override
+    public void onPause() {
+        super.onPause();
+        currentCharacter.setNewRating(newRating);
     }
 }

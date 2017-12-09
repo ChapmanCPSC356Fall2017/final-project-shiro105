@@ -102,6 +102,7 @@
         android:id="@+id/fragment_ratingRatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:stepSize="1"
 
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
