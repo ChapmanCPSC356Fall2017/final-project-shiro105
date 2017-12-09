@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+
 import cpsc356.characterpicker.R;
 
 /**
@@ -36,5 +38,22 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHold
     @Override
     public int getItemCount() {
         return CharacterCollection.GetInstance().getListOfCharacters().size();
+    }
+
+    // Used to implement swipe removal
+    public void Remove(int position)
+    {
+        CharacterCollection.GetInstance().getListOfCharacters().remove(position);
+
+        // Tells the adapter that an item has been removed
+        notifyItemRemoved(position);
+    }
+
+    // Used to implement Drag and Drop
+    public void Swap(int firstPos, int secondPos)
+    {
+        // We can use the Collections method to handle the swapping.
+        Collections.swap(CharacterCollection.GetInstance().getListOfCharacters(), firstPos, secondPos);
+        notifyItemMoved(firstPos, secondPos);
     }
 }

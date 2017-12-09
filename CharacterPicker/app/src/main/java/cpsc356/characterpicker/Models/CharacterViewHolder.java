@@ -1,5 +1,6 @@
 package cpsc356.characterpicker.Models;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +8,8 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import cpsc356.characterpicker.Activities.ViewSingleCharacterActivity;
+import cpsc356.characterpicker.Fragments.ViewSingleCharacterFragment;
 import cpsc356.characterpicker.R;
 
 /**
@@ -42,8 +45,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
     public void DisplayCharacterProfile(CharacterEntity currentOne)
     {
         storedCharacter = currentOne;
-
-        storedCharacterImage.setImageResource(storedCharacter.getPictureID());
+        storedCharacterImage.setImageResource(storedCharacter.getProfilePictureID());
         storedCharacterName.setText(storedCharacter.getName());
         storedCharacterRating.setText(String.format(Locale.US,"%3.2f", storedCharacter.getAverageRating()));
     }
@@ -51,6 +53,17 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
     // When we click on this, we are taken to the ViewCharacterScreen
     @Override
     public void onClick(View view) {
-        //TODO: NEED TO IMPLEMENT
+        Intent characterViewIntent = new Intent(view.getContext(), ViewSingleCharacterActivity.class);
+
+        // After making the intent, we then pass in all of the nec
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, storedCharacter.getId());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_ID, storedCharacter.getProfilePictureID());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, storedCharacter.getName());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, storedCharacter.getAverageRating());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, storedCharacter.getAge());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_PIC_ID, storedCharacter.getSexImageID());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, storedCharacter.getDescription());
+
+        view.getContext().startActivity(characterViewIntent);
     }
 }

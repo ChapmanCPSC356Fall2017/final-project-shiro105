@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.ViewSingleCharacterActivity"
+            android:parentActivityName=".Activities.CharacterListActivity"
+            >
+        </activity>
+        <activity android:name=".Activities.EditSingleCharacterActivity"
+            android:parentActivityName=".Activities.ViewSingleCharacterActivity"
+            >
+        </activity>
     </application>
 
 </manifest>

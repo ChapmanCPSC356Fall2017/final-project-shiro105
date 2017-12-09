@@ -2,6 +2,8 @@ package cpsc356.characterpicker.Models;
 
 import java.util.UUID;
 
+import cpsc356.characterpicker.R;
+
 /**
  * Created by matthewshiroma on 12/1/17.
  *
@@ -13,21 +15,35 @@ public class CharacterEntity {
     private String id;
     private String name;
     private int age;
-    private char sex;
     private String description;
     private float averageRating;
-    private int pictureID;
+    private int profilePictureID;
+    private int sexImageID;         // Holds the current sex of the character. Also defines what sex they are
 
-    public CharacterEntity(String name, int age, char sex, String description)
+    // Use this constructor if you don't want to set an image ID by default
+    public CharacterEntity(String name, int age, String sex, String description)
     {
-        this.name = name;
-        this.age = age;
-        this.sex = sex;
-        this.description = description;
+        setName(name);
+        setAge(age);
+        setSexImageID(sex);
+        setDescription(description);
 
         id = UUID.randomUUID().toString();
         averageRating = 0.0f;
-        pictureID = 0;
+        profilePictureID = R.drawable.image_defaultPic;
+    }
+
+    // If you have an image to use for the profile pic, use this one
+    public CharacterEntity(String name, int age, String sex, String description, int picId)
+    {
+        setName(name);
+        setAge(age);
+        setSexImageID(sex);
+        setDescription(description);
+
+        id = UUID.randomUUID().toString();
+        averageRating = 0.0f;
+        profilePictureID = picId;
     }
 
     public String getId() {
@@ -46,16 +62,17 @@ public class CharacterEntity {
         return description;
     }
 
-    public char getSex() {
-        return sex;
-    }
-
     public float getAverageRating() {
         return averageRating;
     }
 
-    public int getPictureID() {
-        return pictureID;
+    public int getProfilePictureID() {
+        return profilePictureID;
+    }
+
+    public int getSexImageID()
+    {
+        return sexImageID;
     }
 
     public void setName(String name) {
@@ -72,16 +89,20 @@ public class CharacterEntity {
         }
     }
 
-    public void setSex(char sex) {
+    public void setSexImageID(String sex) {
         switch(sex)
         {
-            case 'm':
-            case 'f':
-            case 'b':
-                this.sex = sex;
+            case "m":
+                sexImageID = R.drawable.icon_male;
+                break;
+            case "f":
+                sexImageID = R.drawable.icon_female;
+                break;
+            case "b":
+                sexImageID = R.drawable.icon_nonbinary;
                 break;
             default:
-                this.sex = 'b';
+                sexImageID = R.drawable.icon_nonbinary;
         }
     }
 
@@ -96,7 +117,20 @@ public class CharacterEntity {
         }
     }
 
-    public void setPictureID(int pictureID) {
-        this.pictureID = pictureID;
+    // Returns a string form of the sex
+    public String getSexString()
+    {
+        switch(sexImageID)
+        {
+            case R.drawable.icon_male:
+                return "m";
+            case R.drawable.icon_female:
+                return "f";
+            case R.drawable.icon_nonbinary:
+                return "b";
+            default:
+                return "b";
+        }
     }
+
 }
