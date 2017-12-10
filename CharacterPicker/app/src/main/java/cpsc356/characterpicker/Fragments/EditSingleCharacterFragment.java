@@ -1,5 +1,7 @@
 package cpsc356.characterpicker.Fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.Locale;
 
+import cpsc356.characterpicker.Activities.EditSingleCharacterActivity;
 import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterEntity;
 import cpsc356.characterpicker.R;
@@ -40,6 +41,20 @@ public class EditSingleCharacterFragment extends Fragment {
 
     private CharacterEntity currentCharacter;
 
+    // Allows us to build an Intent for this fragment
+    public static Intent BuildIntent(CharacterEntity newCharacter, Context ctx)
+    {
+        Intent newIntent = new Intent(ctx, EditSingleCharacterActivity.class);
+        newIntent.putExtra(CHARACTER_ID_KEY, newCharacter.getId());
+        newIntent.putExtra(CHARACTER_NAME_KEY, newCharacter.getName());
+        newIntent.putExtra(CHARACTER_AGE_KEY, newCharacter.getAge());
+        newIntent.putExtra(CHARACTER_DESC_KEY, newCharacter.getDescription());
+        newIntent.putExtra(CHARACTER_PIC_ID, newCharacter.getProfilePictureID());
+        newIntent.putExtra(CHARACTER_SEX_PIC_ID, newCharacter.getSexImageID());
+
+        return newIntent;
+    }
+
     // We first get the character data
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,31 +68,31 @@ public class EditSingleCharacterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View currView = inflater.inflate(R.layout.fragment_view_character, container, false);
+        View currView = inflater.inflate(R.layout.fragment_edit_character, container, false);
 
         // First step is to initialize all of the private variables
-        editCharacterProfile = (ImageView) currView.findViewById(R.id.fragment_profileImageView);
-        editCharacterName = (EditText) currView.findViewById(R.id.fragment_nameTextView);
-        editCharacterAge = (EditText) currView.findViewById(R.id.fragment_ageTextView);
-        editCharacterSex = (Spinner) currView.findViewById(R.id.sex_ImageView);
-        editCharacterDescription = (EditText) currView.findViewById(R.id.fragment_descTextView);
+        editCharacterProfile = (ImageView) currView.findViewById(R.id.fragment_profileImageEdit);
+        editCharacterName = (EditText) currView.findViewById(R.id.fragment_nameEditText);
+        editCharacterAge = (EditText) currView.findViewById(R.id.fragment_ageEditText);
+        editCharacterSex = (Spinner) currView.findViewById(R.id.fragment_sexSpinner);
+        editCharacterDescription = (EditText) currView.findViewById(R.id.fragment_descEditText);
 
         // Then, we get the data from the passed in arguments and put them into the Widgets
         int profilePicId = getArguments().getInt(CHARACTER_PIC_ID);
-        String sexValue = currentCharacter.getSexString();
+        //String sexValue = currentCharacter.getSexString();
         String name = getArguments().getString(CHARACTER_NAME_KEY);
         String desc = getArguments().getString(CHARACTER_DESC_KEY);
         int age = getArguments().getInt(CHARACTER_AGE_KEY);
 
         editCharacterProfile.setImageResource(profilePicId);
-        //TODO: IMPLEMENT SPINNER
         editCharacterName.setText(name);
         editCharacterDescription.setText(desc);
         editCharacterAge.setText(String.format(Locale.US,"%d", age));
 
-       // TODO: IMPLEMENT LISTENERS
+
+        //TODO: IMPLEMENT SPINNER
+        //TODO: IMPLEMENT LISTENERS
 
         return currView;
     }
-
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -112,6 +111,7 @@
             />
 
         <Spinner
+            android:id="@+id/fragment_sexSpinner"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:entries="@array/sex_array"

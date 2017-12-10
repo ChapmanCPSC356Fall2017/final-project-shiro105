@@ -29,12 +29,12 @@ public class CharacterEntity {
     private Dictionary<String, Integer> categoricalRatings;    // Holds all of the data for the character's ratings
 
     // Use this constructor if you don't want to set an image ID by default
-    public CharacterEntity(String name, int age, String sex, String description)
+    public CharacterEntity()
     {
-        setName(name);
-        setAge(age);
-        setSexImageID(sex);
-        setDescription(description);
+        name = "New Character";
+        age = 0;
+        description = "A new Character";
+        setSexImageID("m");
 
         id = UUID.randomUUID().toString();
         profilePictureID = R.drawable.image_defaultpic;
