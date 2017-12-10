@@ -15,7 +15,6 @@ import cpsc356.characterpicker.R;
  *  getting the specified fragment.
  *
  *  TODO: Solve small use cases (for insertion, deletion, updating)
- *  TODO: Select a picture from the gallery
  *  TODO: LAST THING! Persistent data using SQLite!
  */
 

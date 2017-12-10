@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import cpsc356.characterpicker.Fragments.ViewSingleCharacterFragment;
 import cpsc356.characterpicker.Models.CharacterCollection;
@@ -30,13 +33,20 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
         ViewSingleCharacterFragment newFragment = new ViewSingleCharacterFragment();
         Bundle data = new Bundle();
 
-        // and extract it into the bundle and send it off.
+        // The bitmap is too large, so we need to downsize it so that it can be passed
+        try
+        {
+            byte[] picData = CharacterEntity.returnBitMapArray(currCharacter.getProfilePictureBitmap());
+            data.putByteArray(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
+        }
+        catch (IOException e) {}
+
+        // Then, we extract it into the bundle and send it off.
         data.putString(ViewSingleCharacterFragment.CHARACTER_ID_KEY, currCharacter.getId());
         data.putString(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, currCharacter.getName());
         data.putString(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, currCharacter.getDescription());
         data.putInt(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, currCharacter.getAge());
         data.putFloat(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, currCharacter.getAverageRating());
-        data.putInt(ViewSingleCharacterFragment.CHARACTER_PIC_ID, currCharacter.getProfilePictureID());
         data.putInt(ViewSingleCharacterFragment.CHARACTER_SEX_PIC_ID, currCharacter.getSexImageID());
         newFragment.setArguments(data);
 

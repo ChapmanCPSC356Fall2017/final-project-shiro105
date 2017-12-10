@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cpsc356.characterpicker.Adapters.CharacterListAdapter;
+import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterTouchHelper;
 import cpsc356.characterpicker.R;
 
@@ -25,6 +26,13 @@ public class CharacterListFragment extends Fragment {
     // All of the current widgets we are using
     private CharacterListAdapter currentAdapter;
     private RecyclerView characterRecycleView;
+
+    // Here, we invoke out CharacterCollection with a call to the instance, using a context
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        CharacterCollection.GetInstance(getContext());
+    }
 
     // When we create this fragment, we set it up with its own adapter.
     @Nullable

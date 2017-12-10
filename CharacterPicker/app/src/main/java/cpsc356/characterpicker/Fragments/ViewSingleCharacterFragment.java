@@ -2,6 +2,7 @@ package cpsc356.characterpicker.Fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,8 +39,9 @@ public class ViewSingleCharacterFragment extends Fragment {
     public static final String CHARACTER_AGE_KEY = "character_age";
     public static final String CHARACTER_DESC_KEY = "character_desc";
     public static final String CHARACTER_RATING_KEY = "character_rating";
-    public static final String CHARACTER_PIC_ID = "character_pic_id";
+    public static final String CHARACTER_PIC_BITMAP = "character_pic_bitmap";
     public static final String CHARACTER_SEX_PIC_ID = "character_sex_pic_id";
+    public static final String CHARACTER_SEX_INDEX = "character_sex_index";
 
     // A reference to all of the widgets
     private ImageView characterImage;
@@ -82,14 +84,20 @@ public class ViewSingleCharacterFragment extends Fragment {
         characterCurrentRating = (RatingBar) currView.findViewById(R.id.fragment_ratingRatingBar);
 
         // Then, we get the data from the passed in arguments and put them into the Widgets
-        int profilePicId = getArguments().getInt(CHARACTER_PIC_ID);
+        // For a bitmap, since we compressed it as a byte array, we need to do this extra step
+        byte[] picData = getArguments().getByteArray(CHARACTER_PIC_BITMAP);
+        if(picData != null)
+        {
+            Bitmap picBitmap = BitmapFactory.decodeByteArray(picData, 0, picData.length);
+            characterImage.setImageBitmap(picBitmap);
+        }
+
         int sexPicId = getArguments().getInt(CHARACTER_SEX_PIC_ID);
         String name = getArguments().getString(CHARACTER_NAME_KEY);
         String desc = getArguments().getString(CHARACTER_DESC_KEY);
         float avRating = getArguments().getFloat(CHARACTER_RATING_KEY);
         int age = getArguments().getInt(CHARACTER_AGE_KEY);
 
-        characterImage.setImageResource(profilePicId);
         characterSexPic.setImageResource(sexPicId);
         characterName.setText(name);
         characterDescription.setText(desc);

@@ -1,11 +1,15 @@
 package cpsc356.characterpicker.Models;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 import cpsc356.characterpicker.Activities.ViewSingleCharacterPagerActivity;
@@ -39,14 +43,13 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
         storedCharacterImage = (ImageView) itemView.findViewById(R.id.cell_profileImageView);
         storedCharacterName = (TextView) itemView.findViewById(R.id.cell_nameTextView);
         storedCharacterRating = (TextView) itemView.findViewById(R.id.cell_ratingTextView);
-
     }
 
     // This displays the information gotten from storedCharacter into the respective slots.
     public void DisplayCharacterProfile(CharacterEntity currentOne)
     {
         storedCharacter = currentOne;
-        storedCharacterImage.setImageResource(storedCharacter.getProfilePictureID());
+        storedCharacterImage.setImageBitmap(storedCharacter.getProfilePictureBitmap());
         storedCharacterName.setText(storedCharacter.getName());
         storedCharacterRating.setText(String.format(Locale.US,"%3.2f", storedCharacter.getAverageRating()));
     }
@@ -58,8 +61,18 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
         Intent characterViewIntent = new Intent(view.getContext(), ViewSingleCharacterPagerActivity.class);
 
         // After making the intent, we then pass in all of the necessary values to our Intent.
+        // The bitmap is too large, so we need to downsize it so that it can be passed
+        try
+        {
+            byte[] picData = CharacterEntity.returnBitMapArray(storedCharacter.getProfilePictureBitmap());
+            characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
+        }
+        catch (IOException e)
+        {
+            Toast.makeText(view.getContext(), "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
+        }
+
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, storedCharacter.getId());
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_ID, storedCharacter.getProfilePictureID());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, storedCharacter.getName());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, storedCharacter.getAverageRating());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, storedCharacter.getAge());

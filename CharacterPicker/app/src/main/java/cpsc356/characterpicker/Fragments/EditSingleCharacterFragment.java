@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
@@ -38,15 +39,6 @@ public class EditSingleCharacterFragment extends Fragment {
 
     private static final int SELECT_PHOTO = 100;
 
-    // Like ViewSingleCharacterFragment, this also has keys associated with the arguments
-    public static final String CHARACTER_ID_KEY = "character_id";
-    public static final String CHARACTER_NAME_KEY = "character_name";
-    public static final String CHARACTER_AGE_KEY = "character_age";
-    public static final String CHARACTER_DESC_KEY = "character_desc";
-    public static final String CHARACTER_PIC_ID = "character_pic_id";
-    public static final String CHARACTER_SEX_INDEX = "character_sex_index";
-
-
     // All of the widgets that are on this fragment
     private ImageView editCharacterProfile;
     private EditText editCharacterName;
@@ -61,12 +53,23 @@ public class EditSingleCharacterFragment extends Fragment {
     public static Intent BuildIntent(CharacterEntity newCharacter, Context ctx)
     {
         Intent newIntent = new Intent(ctx, EditSingleCharacterActivity.class);
-        newIntent.putExtra(CHARACTER_ID_KEY, newCharacter.getId());
-        newIntent.putExtra(CHARACTER_NAME_KEY, newCharacter.getName());
-        newIntent.putExtra(CHARACTER_AGE_KEY, newCharacter.getAge());
-        newIntent.putExtra(CHARACTER_DESC_KEY, newCharacter.getDescription());
-        newIntent.putExtra(CHARACTER_PIC_ID, newCharacter.getProfilePictureID());
-        newIntent.putExtra(CHARACTER_SEX_INDEX, newCharacter.getSexIndex());
+
+        // The bitmap is too large, so we need to downsize it so that it can be passed
+        try
+        {
+            byte[] picData = CharacterEntity.returnBitMapArray(newCharacter.getProfilePictureBitmap());
+            newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
+        }
+        catch (IOException e)
+        {
+            Toast.makeText(ctx, "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
+        }
+
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, newCharacter.getId());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, newCharacter.getName());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, newCharacter.getAge());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, newCharacter.getDescription());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_INDEX, newCharacter.getSexIndex());
 
         return newIntent;
     }
@@ -76,7 +79,7 @@ public class EditSingleCharacterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String currentCharacterID = getArguments().getString(CHARACTER_ID_KEY);
+        String currentCharacterID = getArguments().getString(ViewSingleCharacterFragment.CHARACTER_ID_KEY);
         currentCharacter = CharacterCollection.GetInstance().getCharacterById(currentCharacterID);
     }
 
@@ -94,21 +97,23 @@ public class EditSingleCharacterFragment extends Fragment {
         editCharacterDescription = (EditText) currView.findViewById(R.id.fragment_descEditText);
 
         // Then, we get the data from the passed in arguments and put them into the Widgets
-        int profilePicId = getArguments().getInt(CHARACTER_PIC_ID);
-        String name = getArguments().getString(CHARACTER_NAME_KEY);
-        String desc = getArguments().getString(CHARACTER_DESC_KEY);
-        int age = getArguments().getInt(CHARACTER_AGE_KEY);
-        int sexIndex = getArguments().getInt(CHARACTER_SEX_INDEX);
+        // For a bitmap, since we compressed it as a byte array, we need to do this extra step to display it.
+        byte[] picData = getArguments().getByteArray(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP);
+        if(picData != null)
+        {
+            Bitmap picBitmap = BitmapFactory.decodeByteArray(picData, 0, picData.length);
+            editCharacterProfile.setImageBitmap(picBitmap);
+        }
 
-        editCharacterProfile.setImageResource(profilePicId);
+        String name = getArguments().getString(ViewSingleCharacterFragment.CHARACTER_NAME_KEY);
+        String desc = getArguments().getString(ViewSingleCharacterFragment.CHARACTER_DESC_KEY);
+        int age = getArguments().getInt(ViewSingleCharacterFragment.CHARACTER_AGE_KEY);
+        int sexIndex = getArguments().getInt(ViewSingleCharacterFragment.CHARACTER_SEX_INDEX);
+
         editCharacterName.setText(name);
         editCharacterDescription.setText(desc);
         editCharacterAge.setText(String.format(Locale.US,"%d", age));
         editCharacterSex.setSelection(sexIndex);
-
-        // We set the tag of theImageView so that we can get the image resource for it.
-        // Whenever we make a change to this, WE NEED TO SET THE TAG TO REFLECT THAT CHANGE
-        editCharacterProfile.setTag(profilePicId);
 
         return currView;
     }
@@ -128,12 +133,15 @@ public class EditSingleCharacterFragment extends Fragment {
                         InputStream imageStream = getContext().getContentResolver().openInputStream(selectedImage);
                         Bitmap yourChosenImage = BitmapFactory.decodeStream(imageStream);
                         editCharacterProfile.setImageBitmap(yourChosenImage);
-                        // TODO: find a way to save this bitmap to the character!
                     }
                     catch (FileNotFoundException e)
                     {
                         Toast.makeText(getContext(), "Unable to find picture", Toast.LENGTH_SHORT).show();
                     }
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Unable to display picture", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -142,13 +150,13 @@ public class EditSingleCharacterFragment extends Fragment {
     // Saves all of the character's attributes back to the character with this call and finished this activity
     public void saveCharacterAttributes()
     {
-        int profileIndex = (int)editCharacterProfile.getTag();
+        Bitmap newProfile = ((BitmapDrawable)editCharacterProfile.getDrawable()).getBitmap();
         String newName = editCharacterName.getEditableText().toString();
         int newAge = Integer.parseInt(editCharacterAge.getEditableText().toString());
         String newDesc = editCharacterDescription.getEditableText().toString();
         String newSex = editCharacterSex.getSelectedItem().toString();
 
-        currentCharacter.setProfilePictureID(profileIndex);
+        currentCharacter.setProfilePictureBitmap(newProfile);
         currentCharacter.setName(newName);
         currentCharacter.setAge(newAge);
         currentCharacter.setDescription(newDesc);
@@ -165,4 +173,5 @@ public class EditSingleCharacterFragment extends Fragment {
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, SELECT_PHOTO);
     }
+
 }

@@ -1,9 +1,9 @@
 package cpsc356.characterpicker.Models;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.UUID;
@@ -31,10 +31,22 @@ public class CharacterEntity {
     private String name;
     private int age;
     private String description;
-    private int profilePictureID;   // Holds the id of the image resource that is used
-    private int sexImageID;         // Holds the current image resource of the character's sex. Also defines what sex they are
+    private Bitmap profilePictureBitmap;    // Holds the current bitmap for the character's profile picture
+    private int sexImageID;             // Holds the current image resource of the character's sex. Also defines what sex they are
 
-    // Initializes a character with default values
+    // Returns the passed in BitMap as a byte array. Used for passing in Intents and bundles.
+    // Throws an IOException if something went wrong.
+    public static byte[] returnBitMapArray(Bitmap bm) throws IOException
+    {
+        // WE need to do this because bitmaps are too large. We need to downsize it so that it can be passed
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        byte[] picData = stream.toByteArray();
+        stream.close();
+        return picData;
+    }
+
+    // Initializes a character with default values.
     public CharacterEntity()
     {
         name = "New Character";
@@ -43,12 +55,11 @@ public class CharacterEntity {
         setSexImageID("m");
 
         id = UUID.randomUUID().toString();
-        profilePictureID =  R.drawable.image_defaultpic;
         categoricalRatings = new Hashtable<String, Integer>();
     }
 
     // Takes in values to make a custom character
-    public CharacterEntity(String name, int age, String sex, String description, int picId)
+    public CharacterEntity(String name, int age, String sex, String description)
     {
         setName(name);
         setAge(age);
@@ -56,7 +67,6 @@ public class CharacterEntity {
         setDescription(description);
 
         id = UUID.randomUUID().toString();
-        profilePictureID = picId;
         categoricalRatings = new Hashtable<String, Integer>();
     }
 
@@ -132,8 +142,8 @@ public class CharacterEntity {
         }
     }
 
-    public int getProfilePictureID() {
-        return profilePictureID;
+    public Bitmap getProfilePictureBitmap() {
+        return profilePictureBitmap;
     }
 
     public int getSexImageID()
@@ -182,8 +192,8 @@ public class CharacterEntity {
         this.description = description;
     }
 
-    public void setProfilePictureID(int profilePictureID) {
-        this.profilePictureID = profilePictureID;
+    public void setProfilePictureBitmap(Bitmap profilePictureBitmap) {
+        this.profilePictureBitmap = profilePictureBitmap;
     }
 
     // Takes in a rating and stores it in the dictionary
