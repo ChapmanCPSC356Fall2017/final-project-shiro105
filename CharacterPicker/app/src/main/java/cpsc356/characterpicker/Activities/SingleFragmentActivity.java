@@ -14,7 +14,7 @@ import cpsc356.characterpicker.R;
  *  This will also contain the code for general Activity stuff, including starting a fragment and getting the specified
  *  fragment.
  *
- *  TODO: Enable swiping left and right on selecting a character to move to the previous/next character
+ *  TODO: Solve small use cases (for insertion, deletion, updating)
  *  TODO: LAST THING! Persistent data using SQLite!
  */
 

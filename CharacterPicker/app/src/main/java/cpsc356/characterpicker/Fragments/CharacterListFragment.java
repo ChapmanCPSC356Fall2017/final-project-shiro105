@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cpsc356.characterpicker.Models.CharacterListAdapter;
+import cpsc356.characterpicker.Adapters.CharacterListAdapter;
 import cpsc356.characterpicker.Models.CharacterTouchHelper;
 import cpsc356.characterpicker.R;
 

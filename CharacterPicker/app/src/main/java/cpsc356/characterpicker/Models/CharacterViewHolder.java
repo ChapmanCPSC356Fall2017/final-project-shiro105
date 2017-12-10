@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import cpsc356.characterpicker.Activities.ViewSingleCharacterActivity;
+import cpsc356.characterpicker.Activities.ViewSingleCharacterPagerActivity;
 import cpsc356.characterpicker.Fragments.ViewSingleCharacterFragment;
 import cpsc356.characterpicker.R;
 
@@ -53,7 +54,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
     // When we click on this, we are taken to the ViewCharacterScreen
     @Override
     public void onClick(View view) {
-        Intent characterViewIntent = new Intent(view.getContext(), ViewSingleCharacterActivity.class);
+        Intent characterViewIntent = new Intent(view.getContext(), ViewSingleCharacterPagerActivity.class);
 
         // After making the intent, we then pass in all of the nec
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, storedCharacter.getId());

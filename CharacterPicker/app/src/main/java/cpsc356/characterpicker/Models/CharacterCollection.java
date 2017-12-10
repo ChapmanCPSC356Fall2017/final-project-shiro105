@@ -52,6 +52,19 @@ public class CharacterCollection {
         return null;
     }
 
+    // Returns the index of the character in the list with the given ID. Returns -1 if it can't find the specified one.
+    public int findCharacterIndexInList(String id)
+    {
+        for(int i = 0; i < listOfCharacters.size(); ++i)
+        {
+            if(listOfCharacters.get(i).getId().equals(id))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     // Sets up default entities in the list.
     private void SetUpInitialSet()
     {

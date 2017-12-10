@@ -3,6 +3,8 @@ package cpsc356.characterpicker.Models;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import cpsc356.characterpicker.Adapters.CharacterListAdapter;
+
 /**
  * Created by matthewshiroma on 12/8/17.
  * Allows for the use of swiping cells and moving cells.

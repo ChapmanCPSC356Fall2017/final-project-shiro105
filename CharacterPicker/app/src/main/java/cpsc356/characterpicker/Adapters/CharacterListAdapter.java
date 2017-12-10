@@ -1,4 +1,4 @@
-package cpsc356.characterpicker.Models;
+package cpsc356.characterpicker.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 
 import java.util.Collections;
 
+import cpsc356.characterpicker.Models.CharacterCollection;
+import cpsc356.characterpicker.Models.CharacterEntity;
+import cpsc356.characterpicker.Models.CharacterViewHolder;
 import cpsc356.characterpicker.R;
 
 /**
