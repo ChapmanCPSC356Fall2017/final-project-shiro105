@@ -135,18 +135,23 @@ public class CharacterEntity {
         return sexImageID;
     }
 
-    public void setName(String name) {
+    // For both setting the name and age, they return true if the change was successful.
+    public boolean setName(String name) {
         if(!name.isEmpty())
         {
             this.name = name;
+            return true;
         }
+        return false;
     }
 
-    public void setAge(int age) {
+    public boolean setAge(int age) {
         if(age > 0)
         {
             this.age = age;
+            return true;
         }
+        return false;
     }
 
     public void setSexImageID(String sex) {
@@ -168,6 +173,10 @@ public class CharacterEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setProfilePictureID(int profilePictureID) {
+        this.profilePictureID = profilePictureID;
     }
 
     // Takes in a rating and stores it in the dictionary
@@ -237,19 +246,19 @@ public class CharacterEntity {
        }
     }
 
-    // Returns a string form of the sex
-    public String getSexString()
+    // Returns a number position that the sex_string is declared in strings.xml, by looking at the sex_icon
+    public int getSexIndex()
     {
         switch(sexImageID)
         {
             case R.drawable.icon_male:
-                return "m";
+                return 0;
             case R.drawable.icon_female:
-                return "f";
+                return 1;
             case R.drawable.icon_nonbinary:
-                return "b";
+                return 2;
             default:
-                return "b";
+                return 2;
         }
     }
 

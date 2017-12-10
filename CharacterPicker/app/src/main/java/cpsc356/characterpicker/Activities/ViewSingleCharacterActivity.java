@@ -2,7 +2,6 @@ package cpsc356.characterpicker.Activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-
 import cpsc356.characterpicker.Fragments.ViewSingleCharacterFragment;
 
 /**

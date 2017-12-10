@@ -143,6 +143,7 @@
             android:layout_height="wrap_content"
             android:text="@string/button_save"
             android:background="@android:color/holo_green_dark"
+            android:onClick="saveAttributes"
 
             android:layout_below="@id/fragment_descEditText"
             android:layout_centerInParent="true"

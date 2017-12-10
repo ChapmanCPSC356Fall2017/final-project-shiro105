@@ -14,9 +14,6 @@ import cpsc356.characterpicker.R;
  *  This will also contain the code for general Activity stuff, including starting a fragment and getting the specified
  *  fragment.
  *
- *  TODO: Add a new Character to the list
- *  TODO: Implement Editing a character by going to a seperate fragment screen, which includes setting up the Spinner and picture taking
- *  TODO: Implement a new menu bar item that allows for adding new characters and deleting characters (while selecting a character)
  *  TODO: Enable swiping left and right on selecting a character to move to the previous/next character
  *  TODO: LAST THING! Persistent data using SQLite!
  */

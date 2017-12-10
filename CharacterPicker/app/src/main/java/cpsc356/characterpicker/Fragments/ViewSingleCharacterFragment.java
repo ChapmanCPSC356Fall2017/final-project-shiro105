@@ -1,14 +1,19 @@
 package cpsc356.characterpicker.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -53,6 +58,9 @@ public class ViewSingleCharacterFragment extends Fragment {
 
         String currentCharacterID = getArguments().getString(CHARACTER_ID_KEY);
         currentCharacter = CharacterCollection.GetInstance().getCharacterById(currentCharacterID);
+
+        // This NEEDS to have this so that the menu bar can be shown
+        setHasOptionsMenu(true);
     }
 
     // We then prepare the view with all of the necessary data and return it
@@ -103,6 +111,39 @@ public class ViewSingleCharacterFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+
         currentCharacter.setNewRating(newRating);
+    }
+
+    // We create the menu to be specific to this fragment
+    // The reason we are doing it here is because we have access to the character model, so it's easier to work with
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.activity_view_character, menu);
+    }
+
+    // This runs whenever the menu is selected. This works by seeing what menu option is picked and depending what is picked,
+    // something will happen
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menu_deleteItem:
+                // We delete the selected character and close this activity
+                CharacterCollection.GetInstance().getListOfCharacters().remove(currentCharacter);
+
+                Toast.makeText(getContext(), "Deleted the Character!", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+
+                return true;    // We did this because this lets the menu know we handled the action
+            case R.id.menu_editItem:
+                // We edit the current character in here
+                Intent characterIntent = EditSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
+                startActivity(characterIntent);
+                return true;
+            default:
+                return false;
+        }
     }
 }

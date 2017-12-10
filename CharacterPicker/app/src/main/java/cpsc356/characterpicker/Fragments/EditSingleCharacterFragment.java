@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -31,7 +32,7 @@ public class EditSingleCharacterFragment extends Fragment {
     public static final String CHARACTER_AGE_KEY = "character_age";
     public static final String CHARACTER_DESC_KEY = "character_desc";
     public static final String CHARACTER_PIC_ID = "character_pic_id";
-    public static final String CHARACTER_SEX_PIC_ID = "character_sex_pic_id";
+    public static final String CHARACTER_SEX_INDEX = "character_sex_index";
 
     private ImageView editCharacterProfile;
     private EditText editCharacterName;
@@ -50,7 +51,7 @@ public class EditSingleCharacterFragment extends Fragment {
         newIntent.putExtra(CHARACTER_AGE_KEY, newCharacter.getAge());
         newIntent.putExtra(CHARACTER_DESC_KEY, newCharacter.getDescription());
         newIntent.putExtra(CHARACTER_PIC_ID, newCharacter.getProfilePictureID());
-        newIntent.putExtra(CHARACTER_SEX_PIC_ID, newCharacter.getSexImageID());
+        newIntent.putExtra(CHARACTER_SEX_INDEX, newCharacter.getSexIndex());
 
         return newIntent;
     }
@@ -79,20 +80,40 @@ public class EditSingleCharacterFragment extends Fragment {
 
         // Then, we get the data from the passed in arguments and put them into the Widgets
         int profilePicId = getArguments().getInt(CHARACTER_PIC_ID);
-        //String sexValue = currentCharacter.getSexString();
         String name = getArguments().getString(CHARACTER_NAME_KEY);
         String desc = getArguments().getString(CHARACTER_DESC_KEY);
         int age = getArguments().getInt(CHARACTER_AGE_KEY);
+        int sexIndex = getArguments().getInt(CHARACTER_SEX_INDEX);
 
         editCharacterProfile.setImageResource(profilePicId);
         editCharacterName.setText(name);
         editCharacterDescription.setText(desc);
         editCharacterAge.setText(String.format(Locale.US,"%d", age));
+        editCharacterSex.setSelection(sexIndex);
 
-
-        //TODO: IMPLEMENT SPINNER
-        //TODO: IMPLEMENT LISTENERS
+        // We set the tag of theImageView so that we can get the image resource for it.
+        // Whenever we make a change to this, WE NEED TO SET THE TAG TO REFLECT THAT CHANGE
+        editCharacterProfile.setTag(profilePicId);
 
         return currView;
+    }
+
+    // Saves all of the character's attributes back to the character with this call and finished this activity
+    public void saveCharacterAttributes()
+    {
+        int profileIndex = (int)editCharacterProfile.getTag();
+        String newName = editCharacterName.getEditableText().toString();
+        int newAge = Integer.parseInt(editCharacterAge.getEditableText().toString());
+        String newDesc = editCharacterDescription.getEditableText().toString();
+        String newSex = editCharacterSex.getSelectedItem().toString();
+
+        currentCharacter.setProfilePictureID(profileIndex);
+        currentCharacter.setName(newName);
+        currentCharacter.setAge(newAge);
+        currentCharacter.setDescription(newDesc);
+        currentCharacter.setSexImageID(newSex);
+
+        Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
+        getActivity().finish();
     }
 }

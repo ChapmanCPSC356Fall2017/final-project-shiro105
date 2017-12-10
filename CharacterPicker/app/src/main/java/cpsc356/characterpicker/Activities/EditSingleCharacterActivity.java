@@ -2,6 +2,7 @@ package cpsc356.characterpicker.Activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import cpsc356.characterpicker.Fragments.EditSingleCharacterFragment;
 
@@ -12,15 +13,23 @@ import cpsc356.characterpicker.Fragments.EditSingleCharacterFragment;
 
 public class EditSingleCharacterActivity extends SingleFragmentActivity {
 
+    private EditSingleCharacterFragment fragment;
+
     // All we need to do is to override this method
     // We get the data from the CharacterListActivity and pass it to the ViewSingleCharacterFragment class
     @Override
     public Fragment setFragmentAndAnimation() {
         Bundle data = getIntent().getExtras();
-        EditSingleCharacterFragment fragment = new EditSingleCharacterFragment();
+        fragment = new EditSingleCharacterFragment();
         fragment.setArguments(data);
 
         useAnimations = true;
         return fragment;
+    }
+
+    // Handles the SaveButton on the given fragment
+    public void saveAttributes(View view)
+    {
+        fragment.saveCharacterAttributes();
     }
 }
