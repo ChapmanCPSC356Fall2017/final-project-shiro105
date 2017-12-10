@@ -2,6 +2,10 @@ package cpsc356.characterpicker.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Locale;
 
 import cpsc356.characterpicker.Activities.EditSingleCharacterActivity;
@@ -20,13 +26,19 @@ import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterEntity;
 import cpsc356.characterpicker.R;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by matthewshiroma on 12/8/17.
- *  This displays the edit character screen, allowing the user to edit the character
+ *  This displays the edit character screen, allowing the user to edit the character.
+ *  Similar to ViewSingleCharacterFragment
  */
 
 public class EditSingleCharacterFragment extends Fragment {
 
+    private static final int SELECT_PHOTO = 100;
+
+    // Like ViewSingleCharacterFragment, this also has keys associated with the arguments
     public static final String CHARACTER_ID_KEY = "character_id";
     public static final String CHARACTER_NAME_KEY = "character_name";
     public static final String CHARACTER_AGE_KEY = "character_age";
@@ -34,12 +46,15 @@ public class EditSingleCharacterFragment extends Fragment {
     public static final String CHARACTER_PIC_ID = "character_pic_id";
     public static final String CHARACTER_SEX_INDEX = "character_sex_index";
 
+
+    // All of the widgets that are on this fragment
     private ImageView editCharacterProfile;
     private EditText editCharacterName;
     private EditText editCharacterAge;
     private EditText editCharacterDescription;
     private Spinner editCharacterSex;
 
+    // Private variables that are local to this fragment
     private CharacterEntity currentCharacter;
 
     // Allows us to build an Intent for this fragment
@@ -56,7 +71,7 @@ public class EditSingleCharacterFragment extends Fragment {
         return newIntent;
     }
 
-    // We first get the character data
+    // We first get the character data and save it for later
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +80,7 @@ public class EditSingleCharacterFragment extends Fragment {
         currentCharacter = CharacterCollection.GetInstance().getCharacterById(currentCharacterID);
     }
 
-    // We then prepare the view with all of the necessary data and return it
+    // We  prepare the view with all of the necessary data and return it.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,6 +113,32 @@ public class EditSingleCharacterFragment extends Fragment {
         return currView;
     }
 
+    // When we get a request code that represents our ImageCode, we process it
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode)
+        {
+            case SELECT_PHOTO:
+                if(resultCode == RESULT_OK)
+                {
+                    try{
+                        Uri selectedImage = data.getData();
+                        InputStream imageStream = getContext().getContentResolver().openInputStream(selectedImage);
+                        Bitmap yourChosenImage = BitmapFactory.decodeStream(imageStream);
+                        editCharacterProfile.setImageBitmap(yourChosenImage);
+                        // TODO: find a way to save this bitmap to the character!
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        Toast.makeText(getContext(), "Unable to find picture", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+    }
+
     // Saves all of the character's attributes back to the character with this call and finished this activity
     public void saveCharacterAttributes()
     {
@@ -115,5 +156,13 @@ public class EditSingleCharacterFragment extends Fragment {
 
         Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
         getActivity().finish();
+    }
+
+    // This method asks the user to select an image from their Gallery to use for the character
+    public void getNewImage()
+    {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
     }
 }

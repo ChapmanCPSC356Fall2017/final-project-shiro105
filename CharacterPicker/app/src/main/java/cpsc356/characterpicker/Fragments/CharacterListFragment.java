@@ -22,10 +22,11 @@ import cpsc356.characterpicker.R;
 
 public class CharacterListFragment extends Fragment {
 
+    // All of the current widgets we are using
     private CharacterListAdapter currentAdapter;
     private RecyclerView characterRecycleView;
 
-    // When we create this fragment, we set it up with its own adapter
+    // When we create this fragment, we set it up with its own adapter.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,11 +46,10 @@ public class CharacterListFragment extends Fragment {
         return v;
     }
 
-    // Whenever there is a dataset change, we update the list
+    // Whenever there is a data set change, we force update the list.
     @Override
     public void onResume() {
         super.onResume();
-
         currentAdapter.notifyDataSetChanged();
     }
 }

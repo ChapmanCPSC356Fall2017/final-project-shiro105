@@ -8,11 +8,12 @@ import cpsc356.characterpicker.Adapters.CharacterListAdapter;
 /**
  * Created by matthewshiroma on 12/8/17.
  * Allows for the use of swiping cells and moving cells.
+ * Works in cotangent with the CharacterListAdapter
  */
 
 public class CharacterTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    private CharacterListAdapter adapter;
+    private CharacterListAdapter adapter;       // A reference to the current adapter
 
     // Constructor that implements its super class's constructor
     public CharacterTouchHelper(CharacterListAdapter newAdapter)

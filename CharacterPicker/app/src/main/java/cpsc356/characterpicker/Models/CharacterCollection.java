@@ -13,8 +13,8 @@ import cpsc356.characterpicker.R;
 
 public class CharacterCollection {
 
-    private static CharacterCollection currentCollection;
-    private List<CharacterEntity> listOfCharacters;
+    private static CharacterCollection currentCollection;       // Singleton concept
+    private List<CharacterEntity> listOfCharacters;             // The reference to all of the items
 
     // Creates a new collection of characters and sets up their initial values
     private CharacterCollection()
@@ -100,6 +100,4 @@ public class CharacterCollection {
         listOfCharacters.add(c14);
         listOfCharacters.add(c15);
     }
-
-
 }

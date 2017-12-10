@@ -10,7 +10,7 @@
         android:id="@+id/fragment_profileImageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/image_kirby"
+        android:src="@drawable/image_defaultpic"
 
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"

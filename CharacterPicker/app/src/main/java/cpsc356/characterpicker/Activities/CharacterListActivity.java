@@ -15,18 +15,18 @@ import cpsc356.characterpicker.R;
 /**
  * Created by matthewshiroma on 12/1/17.
  *
- *  This extends the SingleFragmentActivity class, allowing it to do its functions, along with class specific ones.
- *
- *  This also contains the menu options when the user wants to add in a new character
+ *  This extends the SingleFragmentActivity class, allowing it to do its functions,
+ *  along with class specific ones. This also contains a menu option for adding a new character into
+ *  the list.
  */
 
 public class CharacterListActivity extends SingleFragmentActivity{
 
-    private CharacterListFragment listFragment;
-
+    private CharacterListFragment listFragment;     // A reference to the fragment that this Activity is showing
 
     // For this one, we want to set the SingleCopyAbilityFragment
-    // We also get the parameters that was passed from CopyAbilityListFragment and pass it to SingleCopyAbilityFragment
+    // We also get the parameters that was passed from CopyAbilityListFragment and
+    // pass it to SingleCopyAbilityFragment
     @Override
     public Fragment setFragmentAndAnimation() {
         useAnimations = false;
@@ -34,7 +34,7 @@ public class CharacterListActivity extends SingleFragmentActivity{
         return listFragment;
     }
 
-    // This creates the menu bar stuff. Here we inflate our custom menu bar layout
+    // This creates the menu bar stuff. Here we inflate our custom menu bar layout for the activity.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -43,8 +43,9 @@ public class CharacterListActivity extends SingleFragmentActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-    // This runs whenever the menu is selected. This works by seeing what menu option is picked and depending what is picked,
-    // something will happen
+    // This runs whenever the menu is selected. This works by seeing what menu option
+    // is picked and depending what is picked, something will happen.
+    // In this case, we are seeing if the user selected the "add_character" option.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
@@ -54,10 +55,14 @@ public class CharacterListActivity extends SingleFragmentActivity{
                 CharacterEntity newCharacter = new CharacterEntity();
                 CharacterCollection.GetInstance().getListOfCharacters().add(0, newCharacter);
 
+                // Note that we created a builder function so that our code is cleaner + we can
+                // choose what to pass in as parameters
                 Intent characterIntent = EditSingleCharacterFragment.BuildIntent(newCharacter, this);
                 startActivity(characterIntent);
 
-                return true;    // We did this because this lets the menu know we handled the action
+                // We return true because this lets the menu know we handled the action.
+                // If we didn't do this, the menu button won't do anything!
+                return true;
             default:
                 return false;
         }

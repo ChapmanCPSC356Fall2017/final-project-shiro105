@@ -16,6 +16,7 @@ import cpsc356.characterpicker.R;
  * Created by matthewshiroma on 12/1/17.
  *
  *  This class helps display the cells that the RecycleView displays.
+ *  It also handles swipe to remove and moving cells around.
  */
 
 public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHolder>{
@@ -57,6 +58,8 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHold
     {
         // We can use the Collections method to handle the swapping.
         Collections.swap(CharacterCollection.GetInstance().getListOfCharacters(), firstPos, secondPos);
+
+        // We then tell the adapter what spots changed
         notifyItemMoved(firstPos, secondPos);
     }
 }

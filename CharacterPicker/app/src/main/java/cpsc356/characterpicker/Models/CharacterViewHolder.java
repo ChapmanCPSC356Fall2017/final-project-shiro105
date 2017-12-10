@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import cpsc356.characterpicker.Activities.ViewSingleCharacterActivity;
 import cpsc356.characterpicker.Activities.ViewSingleCharacterPagerActivity;
 import cpsc356.characterpicker.Fragments.ViewSingleCharacterFragment;
 import cpsc356.characterpicker.R;
@@ -22,11 +21,12 @@ import cpsc356.characterpicker.R;
 
 public class CharacterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+    // All of the widgets this cell has
     private ImageView storedCharacterImage;
     private TextView storedCharacterName;
     private TextView storedCharacterRating;
 
-    private CharacterEntity storedCharacter;
+    private CharacterEntity storedCharacter;        // The character that is currently stored in this cell
 
     // This is required from the ViewHolder superclass
     public CharacterViewHolder(View itemView) {
@@ -51,12 +51,13 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
         storedCharacterRating.setText(String.format(Locale.US,"%3.2f", storedCharacter.getAverageRating()));
     }
 
-    // When we click on this, we are taken to the ViewCharacterScreen
+    // When we click on this, we are taken to the ViewCharacterScreen.
+    // Here, we set off a PagerActivity, which displays out ViewSingleCharacterFragment
     @Override
     public void onClick(View view) {
         Intent characterViewIntent = new Intent(view.getContext(), ViewSingleCharacterPagerActivity.class);
 
-        // After making the intent, we then pass in all of the nec
+        // After making the intent, we then pass in all of the necessary values to our Intent.
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, storedCharacter.getId());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_ID, storedCharacter.getProfilePictureID());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, storedCharacter.getName());

@@ -11,6 +11,7 @@
     <string name="enter_an_age_editText">Enter an age...</string>
     <string name="enter_a_description_editText">Enter a description...</string>
     <string name="delete_menu">Delete</string>
+    <string name="picture_EditLabel">Change Picture:</string>
 
     <string-array name="sex_array">
         <item>"Male"</item>

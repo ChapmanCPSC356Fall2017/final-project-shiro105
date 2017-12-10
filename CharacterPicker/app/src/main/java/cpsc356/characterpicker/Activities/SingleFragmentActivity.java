@@ -11,10 +11,11 @@ import cpsc356.characterpicker.R;
 
 /*
  *  This class is meant to be inherited by any Activity that is only planning to use one fragment.
- *  This will also contain the code for general Activity stuff, including starting a fragment and getting the specified
- *  fragment.
+ *  This will also contain the code for general Activity stuff, including starting a fragment and
+ *  getting the specified fragment.
  *
  *  TODO: Solve small use cases (for insertion, deletion, updating)
+ *  TODO: Select a picture from the gallery
  *  TODO: LAST THING! Persistent data using SQLite!
  */
 

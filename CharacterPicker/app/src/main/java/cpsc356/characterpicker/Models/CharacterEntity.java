@@ -1,5 +1,9 @@
 package cpsc356.characterpicker.Models;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.UUID;
@@ -14,21 +18,23 @@ import cpsc356.characterpicker.R;
 
 public class CharacterEntity {
 
+    // Private keys that reference the various spots in the dictionary
     private static final String FIVE_STAR_KEY = "Five";
     private static final String FOUR_STAR_KEY = "Four";
     private static final String THREE_STAR_KEY = "Three";
     private static final String TWO_STAR_KEY = "Two";
     private static final String ONE_STAR_KEY = "One";
 
+    private Dictionary<String, Integer> categoricalRatings;    // Holds all of the data for the character's ratings
+
     private String id;
     private String name;
     private int age;
     private String description;
-    private int profilePictureID;
-    private int sexImageID;         // Holds the current sex of the character. Also defines what sex they are
-    private Dictionary<String, Integer> categoricalRatings;    // Holds all of the data for the character's ratings
+    private int profilePictureID;   // Holds the id of the image resource that is used
+    private int sexImageID;         // Holds the current image resource of the character's sex. Also defines what sex they are
 
-    // Use this constructor if you don't want to set an image ID by default
+    // Initializes a character with default values
     public CharacterEntity()
     {
         name = "New Character";
@@ -37,11 +43,11 @@ public class CharacterEntity {
         setSexImageID("m");
 
         id = UUID.randomUUID().toString();
-        profilePictureID = R.drawable.image_defaultpic;
+        profilePictureID =  R.drawable.image_defaultpic;
         categoricalRatings = new Hashtable<String, Integer>();
     }
 
-    // If you have an image to use for the profile pic, use this one
+    // Takes in values to make a custom character
     public CharacterEntity(String name, int age, String sex, String description, int picId)
     {
         setName(name);
@@ -154,6 +160,7 @@ public class CharacterEntity {
         return false;
     }
 
+    // Only allows for the sex to be three things
     public void setSexImageID(String sex) {
         switch(sex)
         {

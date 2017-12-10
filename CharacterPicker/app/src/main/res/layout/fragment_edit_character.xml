@@ -12,7 +12,7 @@
             android:id="@+id/frgment_pictureTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Picture: "
+            android:text="@string/picture_EditLabel"
             android:textSize="25sp"
 
             android:layout_alignParentTop="true"
@@ -24,7 +24,10 @@
             android:id="@+id/fragment_profileImageEdit"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/image_kirby"
+            android:src="@drawable/image_defaultpic"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="selectNewPicture"
 
             android:layout_below="@id/frgment_pictureTextView"
             android:layout_centerInParent="true"

@@ -11,7 +11,8 @@ import cpsc356.characterpicker.Models.CharacterEntity;
 
 /**
  * Created by matthewshiroma on 12/9/17.
- * This class allows for the ViewCharacterFragment to be able to swipe left and right on them.
+ * This allows for the ViewSingleCharacterFragment to be able to swipe left and right on them to toggle
+ * through them.
  */
 
 public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
@@ -21,14 +22,15 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
-    // We take out the character from that position, put it in a fragment and return it.
+    // We need to make sure we put the proper data into the fragment
     @Override
     public Fragment getItem(int position) {
+        // We first get the character that is at this current spot in our list
         CharacterEntity currCharacter = CharacterCollection.GetInstance().getListOfCharacters().get(position);
         ViewSingleCharacterFragment newFragment = new ViewSingleCharacterFragment();
-
-        // We extract all of the data we need and send it off
         Bundle data = new Bundle();
+
+        // and extract it into the bundle and send it off.
         data.putString(ViewSingleCharacterFragment.CHARACTER_ID_KEY, currCharacter.getId());
         data.putString(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, currCharacter.getName());
         data.putString(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, currCharacter.getDescription());
@@ -36,8 +38,8 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
         data.putFloat(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, currCharacter.getAverageRating());
         data.putInt(ViewSingleCharacterFragment.CHARACTER_PIC_ID, currCharacter.getProfilePictureID());
         data.putInt(ViewSingleCharacterFragment.CHARACTER_SEX_PIC_ID, currCharacter.getSexImageID());
-
         newFragment.setArguments(data);
+
         return newFragment;
     }
 

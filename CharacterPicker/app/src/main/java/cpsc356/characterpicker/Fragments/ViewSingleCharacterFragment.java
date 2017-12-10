@@ -1,6 +1,7 @@
 package cpsc356.characterpicker.Fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,14 +25,14 @@ import cpsc356.characterpicker.R;
 /**
  * Created by matthewshiroma on 12/1/17.
  *
- *  This class will represent all of the actions that a fragment displaying a character's attributes.
+ *  This displays all of the actions that a fragment displaying a character's attributes does, including
+ *  how the logic flow works on them
  *
  */
 
 public class ViewSingleCharacterFragment extends Fragment {
 
-    public static final String LOGTAG = "ViewSingleCharacterFragment";
-
+    // All of these are used to get specific values from the arguments passed in
     public static final String CHARACTER_ID_KEY = "character_id";
     public static final String CHARACTER_NAME_KEY = "character_name";
     public static final String CHARACTER_AGE_KEY = "character_age";
@@ -40,6 +41,7 @@ public class ViewSingleCharacterFragment extends Fragment {
     public static final String CHARACTER_PIC_ID = "character_pic_id";
     public static final String CHARACTER_SEX_PIC_ID = "character_sex_pic_id";
 
+    // A reference to all of the widgets
     private ImageView characterImage;
     private TextView characterName;
     private TextView characterAverageRating;
@@ -48,10 +50,11 @@ public class ViewSingleCharacterFragment extends Fragment {
     private TextView characterDescription;
     private RatingBar characterCurrentRating;
 
+    // Private variables for this fragment only
     private CharacterEntity currentCharacter;
     private int newRating;
 
-    // We first get the character data
+    // We first get the character data from our passed in arguments
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +66,7 @@ public class ViewSingleCharacterFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    // We then prepare the view with all of the necessary data and return it
+    // We then prepare the view with all of the necessary data and return it out.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

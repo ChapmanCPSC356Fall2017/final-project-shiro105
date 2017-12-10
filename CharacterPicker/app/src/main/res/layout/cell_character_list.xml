@@ -13,7 +13,7 @@
         android:id="@+id/cell_profileImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/image_kirby"
+        android:src="@drawable/image_defaultpic"
         />
 
     <TextView
