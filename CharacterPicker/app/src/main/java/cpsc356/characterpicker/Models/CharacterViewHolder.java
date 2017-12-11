@@ -58,27 +58,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
     // Here, we set off a PagerActivity, which displays out ViewSingleCharacterFragment
     @Override
     public void onClick(View view) {
-        Intent characterViewIntent = new Intent(view.getContext(), ViewSingleCharacterPagerActivity.class);
-
-        // After making the intent, we then pass in all of the necessary values to our Intent.
-        // The bitmap is too large, so we need to downsize it so that it can be passed
-        try
-        {
-            byte[] picData = CharacterEntity.returnBitMapArray(storedCharacter.getProfilePictureBitmap());
-            characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
-        }
-        catch (IOException e)
-        {
-            Toast.makeText(view.getContext(), "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
-        }
-
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, storedCharacter.getId());
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, storedCharacter.getName());
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, storedCharacter.getAverageRating());
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, storedCharacter.getAge());
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_PIC_ID, storedCharacter.getSexImageID());
-        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, storedCharacter.getDescription());
-
+        Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(storedCharacter, view.getContext());
         view.getContext().startActivity(characterViewIntent);
     }
 }

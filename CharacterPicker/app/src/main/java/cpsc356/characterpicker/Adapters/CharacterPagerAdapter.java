@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -30,7 +29,7 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         // We first get the character that is at this current spot in our list
         CharacterEntity currCharacter = CharacterCollection.GetInstance().getListOfCharacters().get(position);
-        ViewSingleCharacterFragment newFragment = new ViewSingleCharacterFragment();
+        ViewSingleCharacterFragment fragment = new ViewSingleCharacterFragment();
         Bundle data = new Bundle();
 
         // The bitmap is too large, so we need to downsize it so that it can be passed
@@ -48,9 +47,9 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
         data.putInt(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, currCharacter.getAge());
         data.putFloat(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, currCharacter.getAverageRating());
         data.putInt(ViewSingleCharacterFragment.CHARACTER_SEX_PIC_ID, currCharacter.getSexImageID());
-        newFragment.setArguments(data);
+        fragment.setArguments(data);
 
-        return newFragment;
+        return fragment;
     }
 
     // Returns the size of the pager (which is the size of the collection)

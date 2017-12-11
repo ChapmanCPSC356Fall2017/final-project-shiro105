@@ -50,14 +50,14 @@ public class EditSingleCharacterFragment extends Fragment {
     private CharacterEntity currentCharacter;
 
     // Allows us to build an Intent for this fragment
-    public static Intent BuildIntent(CharacterEntity newCharacter, Context ctx)
+    public static Intent BuildIntent(CharacterEntity character, Context ctx)
     {
         Intent newIntent = new Intent(ctx, EditSingleCharacterActivity.class);
 
         // The bitmap is too large, so we need to downsize it so that it can be passed
         try
         {
-            byte[] picData = CharacterEntity.returnBitMapArray(newCharacter.getProfilePictureBitmap());
+            byte[] picData = CharacterEntity.returnBitMapArray(character.getProfilePictureBitmap());
             newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
         }
         catch (IOException e)
@@ -65,11 +65,11 @@ public class EditSingleCharacterFragment extends Fragment {
             Toast.makeText(ctx, "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
         }
 
-        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, newCharacter.getId());
-        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, newCharacter.getName());
-        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, newCharacter.getAge());
-        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, newCharacter.getDescription());
-        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_INDEX, newCharacter.getSexIndex());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, character.getId());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, character.getName());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, character.getAge());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, character.getDescription());
+        newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_INDEX, character.getSexIndex());
 
         return newIntent;
     }
@@ -148,6 +148,7 @@ public class EditSingleCharacterFragment extends Fragment {
     }
 
     // Saves all of the character's attributes back to the character with this call and finished this activity
+    // We then make sure we get those changes propagated to the ViewSingleCharacterFragment
     public void saveCharacterAttributes()
     {
         Bitmap newProfile = ((BitmapDrawable)editCharacterProfile.getDrawable()).getBitmap();
@@ -163,7 +164,9 @@ public class EditSingleCharacterFragment extends Fragment {
         currentCharacter.setSexImageID(newSex);
 
         Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
-        getActivity().finish();
+
+        Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
+        getContext().startActivity(characterViewIntent);
     }
 
     // This method asks the user to select an image from their Gallery to use for the character

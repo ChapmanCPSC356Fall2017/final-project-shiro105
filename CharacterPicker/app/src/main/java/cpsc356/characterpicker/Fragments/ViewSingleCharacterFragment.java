@@ -1,11 +1,13 @@
 package cpsc356.characterpicker.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,8 +19,10 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Locale;
 
+import cpsc356.characterpicker.Activities.ViewSingleCharacterPagerActivity;
 import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterEntity;
 import cpsc356.characterpicker.R;
@@ -54,7 +58,33 @@ public class ViewSingleCharacterFragment extends Fragment {
 
     // Private variables for this fragment only
     private CharacterEntity currentCharacter;
-    private int newRating;
+
+    // Allows us to make an Intent for this fragment
+    public static Intent BuildIntent(CharacterEntity character, Context ctx)
+    {
+        Intent characterViewIntent = new Intent(ctx, ViewSingleCharacterPagerActivity.class);
+
+        // After making the intent, we then pass in all of the necessary values to our Intent.
+        // The bitmap is too large, so we need to downsize it so that it can be passed
+        try
+        {
+            byte[] picData = CharacterEntity.returnBitMapArray(character.getProfilePictureBitmap());
+            characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
+        }
+        catch (IOException e)
+        {
+            Toast.makeText(ctx, "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
+        }
+
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, character.getId());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, character.getName());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, character.getAverageRating());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, character.getAge());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_PIC_ID, character.getSexImageID());
+        characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, character.getDescription());
+
+        return characterViewIntent;
+    }
 
     // We first get the character data from our passed in arguments
     @Override
@@ -108,22 +138,20 @@ public class ViewSingleCharacterFragment extends Fragment {
         characterCurrentRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                if(v != newRating)
+                if(v != 0 && b == true)
                 {
-                    newRating = (int)v;
+                    // Once the user sets a rating, the rating will be saved and update the rating value
+                    currentCharacter.setNewRating((int)v);
+                    float newAvgRating = currentCharacter.getAverageRating();
+
+                    characterAverageRating.setText(String.format(Locale.US,"Rating: %3.2f", newAvgRating));
+                    Toast.makeText(getContext(), "Thanks for the rating!", Toast.LENGTH_SHORT).show();
+                    ratingBar.setVisibility(View.GONE);
                 }
             }
         });
 
         return currView;
-    }
-
-    // When the user goes back to the previous screen, we do the math on the rating and set it.
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        currentCharacter.setNewRating(newRating);
     }
 
     // We create the menu to be specific to this fragment
