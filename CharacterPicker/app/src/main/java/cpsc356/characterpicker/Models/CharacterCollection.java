@@ -18,6 +18,8 @@ import cpsc356.characterpicker.R;
 
 public class CharacterCollection {
 
+    // TODO: Here we should create a variable that allows this to access the database!
+
     private static CharacterCollection currentCollection;       // Singleton concept
     private List<CharacterEntity> listOfCharacters;             // The reference to all of the items
 
@@ -39,6 +41,7 @@ public class CharacterCollection {
     {
         if(currentCollection == null)
         {
+            // TODO: Read from the database first so that we can fill in the list!
             currentCollection = new CharacterCollection();
         }
         return currentCollection;
@@ -50,6 +53,7 @@ public class CharacterCollection {
     {
         if(currentCollection == null)
         {
+            // TODO: Read from the database first so that we can fill in the list!
             currentCollection = new CharacterCollection(ctx);
         }
         return currentCollection;

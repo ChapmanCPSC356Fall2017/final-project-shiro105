@@ -172,6 +172,8 @@ public class ViewSingleCharacterFragment extends Fragment {
                 // We delete the selected character and close this activity
                 CharacterCollection.GetInstance().getListOfCharacters().remove(currentCharacter);
 
+                // TODO: We also tell the database the new changes here!
+
                 Toast.makeText(getContext(), "Deleted the Character!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
 

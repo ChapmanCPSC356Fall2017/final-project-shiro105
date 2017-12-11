@@ -48,6 +48,7 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHold
     public void Remove(int position)
     {
         CharacterCollection.GetInstance().getListOfCharacters().remove(position);
+        // TODO: We update the database with this removal
 
         // Tells the adapter that an item has been removed
         notifyItemRemoved(position);

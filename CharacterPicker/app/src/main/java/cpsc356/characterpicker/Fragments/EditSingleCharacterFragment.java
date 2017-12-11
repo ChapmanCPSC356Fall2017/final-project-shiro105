@@ -163,6 +163,10 @@ public class EditSingleCharacterFragment extends Fragment {
         currentCharacter.setDescription(newDesc);
         currentCharacter.setSexImageID(newSex);
 
+        // In this method, we also put those changes in our database
+        // TODO: SQLITE STUFF
+
+
         Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
 
         Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());

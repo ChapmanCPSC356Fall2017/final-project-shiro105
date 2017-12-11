@@ -55,6 +55,9 @@ public class CharacterListActivity extends SingleFragmentActivity{
                 CharacterEntity newCharacter = new CharacterEntity();
                 CharacterCollection.GetInstance().getListOfCharacters().add(0, newCharacter);
 
+                // TODO: Insert this new character in our database!
+
+
                 // Note that we created a builder function so that our code is cleaner + we can
                 // choose what to pass in as parameters
                 Intent characterIntent = EditSingleCharacterFragment.BuildIntent(newCharacter, this);
