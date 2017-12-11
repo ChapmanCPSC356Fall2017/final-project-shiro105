@@ -1,11 +1,19 @@
 package cpsc356.characterpicker.Activities;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import java.io.IOException;
+
+import cpsc356.characterpicker.Database.CharacterDBHelper;
 import cpsc356.characterpicker.Fragments.CharacterListFragment;
 import cpsc356.characterpicker.Fragments.EditSingleCharacterFragment;
 import cpsc356.characterpicker.Models.CharacterCollection;
@@ -23,6 +31,15 @@ import cpsc356.characterpicker.R;
 public class CharacterListActivity extends SingleFragmentActivity{
 
     private CharacterListFragment listFragment;     // A reference to the fragment that this Activity is showing
+
+    // Here, we initialize the database for our use in here
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        CharacterDBHelper.GetInstance(this).readAllValues();
+        //CharacterCollection.GetInstance(this);
+    }
 
     // For this one, we want to set the SingleCopyAbilityFragment
     // We also get the parameters that was passed from CopyAbilityListFragment and
@@ -53,10 +70,17 @@ public class CharacterListActivity extends SingleFragmentActivity{
             case R.id.menu_addCharacter:
                 // We create a new character and set the new Fragment to use that character
                 CharacterEntity newCharacter = new CharacterEntity();
+                newCharacter.setProfilePictureBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.image_defaultpic));
+
                 CharacterCollection.GetInstance().getListOfCharacters().add(0, newCharacter);
-
-                // TODO: Insert this new character in our database!
-
+                try
+                {
+                    CharacterDBHelper.GetInstance(this).addEntry(newCharacter);
+                }
+                catch(IOException e)
+                {
+                    Toast.makeText(this, "Unable to add in a character", Toast.LENGTH_SHORT).show();
+                }
 
                 // Note that we created a builder function so that our code is cleaner + we can
                 // choose what to pass in as parameters

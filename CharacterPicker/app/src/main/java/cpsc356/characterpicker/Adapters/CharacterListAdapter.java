@@ -1,5 +1,6 @@
 package cpsc356.characterpicker.Adapters;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import java.util.Collections;
 
+import cpsc356.characterpicker.Database.CharacterDBHelper;
 import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterEntity;
 import cpsc356.characterpicker.Models.CharacterViewHolder;
@@ -47,8 +49,8 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHold
     // Used to implement swipe removal
     public void Remove(int position)
     {
+        CharacterDBHelper.GetInstance().deleteEntry(CharacterCollection.GetInstance().getListOfCharacters().get(position));
         CharacterCollection.GetInstance().getListOfCharacters().remove(position);
-        // TODO: We update the database with this removal
 
         // Tells the adapter that an item has been removed
         notifyItemRemoved(position);

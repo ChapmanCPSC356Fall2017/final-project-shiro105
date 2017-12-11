@@ -27,13 +27,6 @@ public class CharacterListFragment extends Fragment {
     private CharacterListAdapter currentAdapter;
     private RecyclerView characterRecycleView;
 
-    // Here, we invoke out CharacterCollection with a call to the instance, using a context
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        CharacterCollection.GetInstance(getContext());
-    }
-
     // When we create this fragment, we set it up with its own adapter.
     @Nullable
     @Override

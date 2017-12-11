@@ -11,12 +11,12 @@ public final class CharacterContract {
 
     // The SQL statement that creates the table
     public static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + CharacterTuple.TABLE_NAME + "(" + CharacterTuple.COLUMN_NAME_ID + " TEXT PRIMARY KEY, "
-            + CharacterTuple.COLUMN_NAME_NAME + " TEXT, " + CharacterTuple.COLUMN_NAME_AGE + " INT, "
-            + CharacterTuple.COLUMN_NAME_DESC + " TEXT, " + CharacterTuple.COLUMN_NAME_BITMAP + " BLOB, "
-            + CharacterTuple.COLUMN_NAME_SEX_ID + " INT, " + CharacterTuple.COLUMN_NAME_ONE_RATING + " TEXT, "
-            + CharacterTuple.COLUMN_NAME_TWO_RATING + " INT, " + CharacterTuple.COLUMN_NAME_THREE_RATING + " TEXT, "
-            + CharacterTuple.COLUMN_NAME_FOUT_RATING + " INT, " + CharacterTuple.COLUMN_NAME_FIVE_RATING + " INT); ";
+            "CREATE TABLE " + CharacterTuple.TABLE_NAME + "(" + CharacterTuple.COLUMN_ID + " TEXT PRIMARY KEY, "
+            + CharacterTuple.COLUMN_NAME + " TEXT, " + CharacterTuple.COLUMN_AGE + " INT, "
+            + CharacterTuple.COLUMN_DESC + " TEXT, " + CharacterTuple.COLUMN_BITMAP + " BLOB, "
+            + CharacterTuple.COLUMN_SEX_ID + " INT, " + CharacterTuple.COLUMN_ONE_STAR_RATING + " TEXT, "
+            + CharacterTuple.COLUMN_TWO_STAR_RATING + " INT, " + CharacterTuple.COLUMN_THREE_STAR_RATING + " TEXT, "
+            + CharacterTuple.COLUMN_FOUR_STAR_RATING + " INT, " + CharacterTuple.COLUMN_FIVE_STAR_RATING + " INT); ";
 
     // The SQL statement that drops the table
     public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + CharacterTuple.TABLE_NAME + ";";
@@ -27,16 +27,16 @@ public final class CharacterContract {
     public static class CharacterTuple implements BaseColumns
     {
         public static final String TABLE_NAME = "Characters";
-        public static final String COLUMN_NAME_ID = "Character_id";     // Primary Key
-        public static final String COLUMN_NAME_NAME = "Character_name";
-        public static final String COLUMN_NAME_AGE = "Character_age";
-        public static final String COLUMN_NAME_DESC = "Character_desc";
-        public static final String COLUMN_NAME_BITMAP = "Character_bitmap";
-        public static final String COLUMN_NAME_SEX_ID = "Character_sex_id";
-        public static final String COLUMN_NAME_ONE_RATING = "Character_one_ratings";
-        public static final String COLUMN_NAME_TWO_RATING = "Character_two_ratings";
-        public static final String COLUMN_NAME_THREE_RATING = "Character_three_ratings";
-        public static final String COLUMN_NAME_FOUT_RATING = "Character_four_ratings";
-        public static final String COLUMN_NAME_FIVE_RATING = "Character_five_ratings";
+        public static final String COLUMN_ID = "Character_id";     // Primary Key
+        public static final String COLUMN_NAME = "Character_name";
+        public static final String COLUMN_AGE = "Character_age";
+        public static final String COLUMN_DESC = "Character_desc";
+        public static final String COLUMN_BITMAP = "Character_bitmap";
+        public static final String COLUMN_SEX_ID = "Character_sex_id";
+        public static final String COLUMN_ONE_STAR_RATING = "Character_one_ratings";
+        public static final String COLUMN_TWO_STAR_RATING = "Character_two_ratings";
+        public static final String COLUMN_THREE_STAR_RATING = "Character_three_ratings";
+        public static final String COLUMN_FOUR_STAR_RATING = "Character_four_ratings";
+        public static final String COLUMN_FIVE_STAR_RATING = "Character_five_ratings";
     }
 }

@@ -2,6 +2,7 @@ package cpsc356.characterpicker.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import cpsc356.characterpicker.Activities.ViewSingleCharacterPagerActivity;
+import cpsc356.characterpicker.Database.CharacterDBHelper;
 import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterEntity;
 import cpsc356.characterpicker.R;
@@ -68,7 +70,7 @@ public class ViewSingleCharacterFragment extends Fragment {
         // The bitmap is too large, so we need to downsize it so that it can be passed
         try
         {
-            byte[] picData = CharacterEntity.returnBitMapArray(character.getProfilePictureBitmap());
+            byte[] picData = character.convertBitMapToByteArray(character.getProfilePictureBitmap());
             characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
         }
         catch (IOException e)
@@ -171,8 +173,7 @@ public class ViewSingleCharacterFragment extends Fragment {
             case R.id.menu_deleteItem:
                 // We delete the selected character and close this activity
                 CharacterCollection.GetInstance().getListOfCharacters().remove(currentCharacter);
-
-                // TODO: We also tell the database the new changes here!
+                CharacterDBHelper.GetInstance(getContext()).deleteEntry(currentCharacter);
 
                 Toast.makeText(getContext(), "Deleted the Character!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();

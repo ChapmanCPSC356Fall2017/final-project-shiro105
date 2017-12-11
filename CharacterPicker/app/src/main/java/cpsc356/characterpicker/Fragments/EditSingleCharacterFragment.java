@@ -2,6 +2,7 @@ package cpsc356.characterpicker.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +24,7 @@ import java.io.InputStream;
 import java.util.Locale;
 
 import cpsc356.characterpicker.Activities.EditSingleCharacterActivity;
+import cpsc356.characterpicker.Database.CharacterDBHelper;
 import cpsc356.characterpicker.Models.CharacterCollection;
 import cpsc356.characterpicker.Models.CharacterEntity;
 import cpsc356.characterpicker.R;
@@ -57,7 +59,7 @@ public class EditSingleCharacterFragment extends Fragment {
         // The bitmap is too large, so we need to downsize it so that it can be passed
         try
         {
-            byte[] picData = CharacterEntity.returnBitMapArray(character.getProfilePictureBitmap());
+            byte[] picData = CharacterEntity.convertBitMapToByteArray(character.getProfilePictureBitmap());
             newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
         }
         catch (IOException e)
@@ -164,13 +166,20 @@ public class EditSingleCharacterFragment extends Fragment {
         currentCharacter.setSexImageID(newSex);
 
         // In this method, we also put those changes in our database
-        // TODO: SQLITE STUFF
-
+        try
+        {
+            CharacterDBHelper.GetInstance(getContext()).updateEntry(currentCharacter);
+        }
+        catch(IOException e)
+        {
+            Toast.makeText(getContext(), "Unable to update entry!", Toast.LENGTH_SHORT).show();
+        }
 
         Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
 
         Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
         getContext().startActivity(characterViewIntent);
+        getActivity().finish();
     }
 
     // This method asks the user to select an image from their Gallery to use for the character

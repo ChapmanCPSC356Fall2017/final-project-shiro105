@@ -35,7 +35,7 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
         // The bitmap is too large, so we need to downsize it so that it can be passed
         try
         {
-            byte[] picData = CharacterEntity.returnBitMapArray(currCharacter.getProfilePictureBitmap());
+            byte[] picData = CharacterEntity.convertBitMapToByteArray(currCharacter.getProfilePictureBitmap());
             data.putByteArray(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
         }
         catch (IOException e) {}

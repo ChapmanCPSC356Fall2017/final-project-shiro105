@@ -3,11 +3,14 @@ package cpsc356.characterpicker.Models;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpsc356.characterpicker.Database.CharacterDBHelper;
 import cpsc356.characterpicker.R;
 
 /**
@@ -17,8 +20,6 @@ import cpsc356.characterpicker.R;
  */
 
 public class CharacterCollection {
-
-    // TODO: Here we should create a variable that allows this to access the database!
 
     private static CharacterCollection currentCollection;       // Singleton concept
     private List<CharacterEntity> listOfCharacters;             // The reference to all of the items
@@ -41,7 +42,6 @@ public class CharacterCollection {
     {
         if(currentCollection == null)
         {
-            // TODO: Read from the database first so that we can fill in the list!
             currentCollection = new CharacterCollection();
         }
         return currentCollection;
@@ -53,7 +53,6 @@ public class CharacterCollection {
     {
         if(currentCollection == null)
         {
-            // TODO: Read from the database first so that we can fill in the list!
             currentCollection = new CharacterCollection(ctx);
         }
         return currentCollection;
@@ -141,5 +140,28 @@ public class CharacterCollection {
         listOfCharacters.add(c13);
         listOfCharacters.add(c14);
         listOfCharacters.add(c15);
+
+        try
+        {
+            CharacterDBHelper.GetInstance(ctx).addEntry(c1);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c2);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c3);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c4);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c5);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c6);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c7);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c8);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c9);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c10);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c11);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c12);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c13);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c14);
+            CharacterDBHelper.GetInstance(ctx).addEntry(c15);
+        }
+        catch (IOException e)
+        {
+            Toast.makeText(ctx, "An error has occured adding in the default set", Toast.LENGTH_SHORT).show();
+        }
     }
 }

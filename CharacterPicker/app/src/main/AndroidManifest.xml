@@ -17,9 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ViewSingleCharacterPagerActivity"
+            android:parentActivityName=".Activities.CharacterListActivity"
             >
         </activity>
         <activity android:name=".Activities.EditSingleCharacterActivity"
+            android:parentActivityName=".Activities.ViewSingleCharacterPagerActivity"
             >
         </activity>
     </application>
