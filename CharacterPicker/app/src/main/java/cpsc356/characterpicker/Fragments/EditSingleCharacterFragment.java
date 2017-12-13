@@ -41,16 +41,15 @@ public class EditSingleCharacterFragment extends Fragment {
     // This is the arbitrary value we are checking to see if we managed to select a photo
     private static final int SELECT_PHOTO = 100;
 
-    // These are public so the Activity can use these
-    public boolean isNewCharacter;
-    public CharacterEntity currentCharacter;
-
     // All of the widgets that are on this fragment
     private ImageView editCharacterProfile;
     private EditText editCharacterName;
     private EditText editCharacterAge;
     private EditText editCharacterDescription;
     private Spinner editCharacterSex;
+
+    private boolean isNewCharacter;             // Is the current character just made?
+    private CharacterEntity currentCharacter;   // A reference to the character in here
 
     // Allows us to build an Intent for this fragment
     // The third parameter tells us if the character is brand new
@@ -202,6 +201,17 @@ public class EditSingleCharacterFragment extends Fragment {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    // Removes the current character, only if they are brand new
+    public void removeNewCharacter()
+    {
+        // If we made a new character, we delete them
+        if(isNewCharacter == true)
+        {
+            CharacterDBHelper.GetInstance().deleteEntry(currentCharacter);
+            CharacterCollection.GetInstance().getListOfCharacters().remove(currentCharacter);
+        }
     }
 
 }

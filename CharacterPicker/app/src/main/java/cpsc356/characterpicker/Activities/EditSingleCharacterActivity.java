@@ -113,12 +113,7 @@ public class EditSingleCharacterActivity extends SingleFragmentActivity {
     // Finished the current activity
     private void finishActivity()
     {
-        // If we made a new character, we delete them
-        if(fragment.isNewCharacter == true)
-        {
-            CharacterDBHelper.GetInstance().deleteEntry(fragment.currentCharacter);
-            CharacterCollection.GetInstance().getListOfCharacters().remove(fragment.currentCharacter);
-        }
+        fragment.removeNewCharacter();
         this.finish();
     }
 }

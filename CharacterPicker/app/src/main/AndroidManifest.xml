@@ -18,10 +18,13 @@
         </activity>
         <activity android:name=".Activities.ViewSingleCharacterPagerActivity"
             android:parentActivityName=".Activities.CharacterListActivity"
+            android:label="@string/view_activity"
+
             >
         </activity>
         <activity android:name=".Activities.EditSingleCharacterActivity"
             android:parentActivityName=".Activities.ViewSingleCharacterPagerActivity"
+            android:label="@string/edit_activity"
             >
         </activity>
     </application>

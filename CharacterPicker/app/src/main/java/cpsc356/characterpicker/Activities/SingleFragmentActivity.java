@@ -14,7 +14,6 @@ import cpsc356.characterpicker.R;
  *  This will also contain the code for general Activity stuff, including starting a fragment and
  *  getting the specified fragment.
  *
- *  TODO: Solve small use cases (for insertion, deletion, updating)
  */
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {

@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">CharacterPicker</string>
+    <string name="app_name">Character Picker</string>
+    <string name="view_activity">View Characters</string>
+    <string name="edit_activity">Edit a Character</string>
     <string name="button_save">SAVE</string>
     <string name="sex_prompt">Choose a sex</string>
     <string name="name_textView">Name:</string>
