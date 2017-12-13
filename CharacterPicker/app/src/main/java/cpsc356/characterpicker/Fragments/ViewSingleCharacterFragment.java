@@ -145,11 +145,21 @@ public class ViewSingleCharacterFragment extends Fragment {
                 if(v != 0 && b == true)
                 {
                     // Once the user sets a rating, the rating will be saved and update the rating value
-                    currentCharacter.setNewRating((int)v);
-                    float newAvgRating = currentCharacter.getAverageRating();
+                    // We also put those changes in our database
+                    try
+                    {
+                        currentCharacter.setNewRating((int)v);
+                        CharacterDBHelper.GetInstance().updateRatingInDB(currentCharacter);
+
+                        float newAvgRating = currentCharacter.getAverageRating();
+                        characterAverageRating.setText(String.format(Locale.US,"Rating: %3.2f", newAvgRating));
+                    }
+                    catch(IOException e)
+                    {
+                        Toast.makeText(getContext(), "Unable to update entry!", Toast.LENGTH_SHORT).show();
+                    }
 
                     // We update the rating on the screen and hide the bar until the user returns to the character list
-                    characterAverageRating.setText(String.format(Locale.US,"Rating: %3.2f", newAvgRating));
                     Toast.makeText(getContext(), "Thanks for the rating!", Toast.LENGTH_SHORT).show();
                     ratingBar.setVisibility(View.GONE);
                 }
