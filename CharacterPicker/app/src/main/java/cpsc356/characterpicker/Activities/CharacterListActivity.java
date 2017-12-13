@@ -37,8 +37,11 @@ public class CharacterListActivity extends SingleFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CharacterDBHelper.GetInstance(this).readAllValues();
-        //CharacterCollection.GetInstance(this);
+        if(savedInstanceState == null)
+        {
+            // When this activity is first created, we read in all of the values from the database
+            CharacterDBHelper.GetInstance(this).readAllValues();
+        }
     }
 
     // For this one, we want to set the SingleCopyAbilityFragment
@@ -69,10 +72,10 @@ public class CharacterListActivity extends SingleFragmentActivity{
         {
             case R.id.menu_addCharacter:
                 // We create a new character and set the new Fragment to use that character
-                CharacterEntity newCharacter = new CharacterEntity();
-                newCharacter.setProfilePictureBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.image_defaultpic));
-
+                CharacterEntity newCharacter = new CharacterEntity(this);
                 CharacterCollection.GetInstance().getListOfCharacters().add(0, newCharacter);
+
+                // We also add this character to the database.
                 try
                 {
                     CharacterDBHelper.GetInstance(this).addEntry(newCharacter);
@@ -82,9 +85,9 @@ public class CharacterListActivity extends SingleFragmentActivity{
                     Toast.makeText(this, "Unable to add in a character", Toast.LENGTH_SHORT).show();
                 }
 
-                // Note that we created a builder function so that our code is cleaner + we can
-                // choose what to pass in as parameters
-                Intent characterIntent = EditSingleCharacterFragment.BuildIntent(newCharacter, this);
+                // We create our Intent, using a EditSingleCharacterFragment and start it
+                // Since this is a brand new character, we make tell the Intent that it is new
+                Intent characterIntent = EditSingleCharacterFragment.BuildIntent(newCharacter, this, true);
                 startActivity(characterIntent);
 
                 // We return true because this lets the menu know we handled the action.

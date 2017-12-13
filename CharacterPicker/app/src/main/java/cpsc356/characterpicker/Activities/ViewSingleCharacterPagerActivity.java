@@ -1,5 +1,6 @@
 package cpsc356.characterpicker.Activities;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -35,5 +36,8 @@ public class ViewSingleCharacterPagerActivity extends AppCompatActivity {
         String characterID = getIntent().getStringExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY);
         int characterIndex = CharacterCollection.GetInstance().findCharacterIndexInList(characterID);
         characterPager.setCurrentItem(characterIndex);
+
+        // We also make sure we only allow for portrait view
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

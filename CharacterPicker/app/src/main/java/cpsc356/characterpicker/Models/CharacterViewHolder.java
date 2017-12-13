@@ -46,6 +46,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements View
     }
 
     // This displays the information gotten from storedCharacter into the respective slots.
+    // We also save an instance to this character
     public void DisplayCharacterProfile(CharacterEntity currentOne)
     {
         storedCharacter = currentOne;

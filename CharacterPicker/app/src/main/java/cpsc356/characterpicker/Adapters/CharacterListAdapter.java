@@ -26,8 +26,8 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHold
     // Inflates each cell into each position
     @Override
     public CharacterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflator = LayoutInflater.from(parent.getContext());
-        View v = inflator.inflate(R.layout.cell_character_list, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View v = inflater.inflate(R.layout.cell_character_list, parent, false);
         CharacterViewHolder holder = new CharacterViewHolder(v);
 
         return holder;
@@ -49,7 +49,10 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterViewHold
     // Used to implement swipe removal
     public void Remove(int position)
     {
-        CharacterDBHelper.GetInstance().deleteEntry(CharacterCollection.GetInstance().getListOfCharacters().get(position));
+        CharacterEntity currChar = CharacterCollection.GetInstance().getListOfCharacters().get(position);
+
+        // When we remove this entry, we want to also remove it from the database
+        CharacterDBHelper.GetInstance().deleteEntry(currChar);
         CharacterCollection.GetInstance().getListOfCharacters().remove(position);
 
         // Tells the adapter that an item has been removed

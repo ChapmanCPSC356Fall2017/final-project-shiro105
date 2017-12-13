@@ -1,6 +1,8 @@
 package cpsc356.characterpicker.Models;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,10 +30,11 @@ public class CharacterEntity {
 
     private Dictionary<String, Integer> categoricalRatings;    // Holds all of the data for the character's ratings
 
-    private String id;
-    private String name;
-    private int age;
-    private String description;
+    // Attributes of a character
+    private String id;                      // A unique string is assigned to each character
+    private String name;                    // The name of the character. Can't be empty
+    private int age;                        // The age of the character. Can't be a negative number.
+    private String description;             // The description of the character.
     private Bitmap profilePictureBitmap;    // Holds the current bitmap for the character's profile picture
     private int sexImageID;                 // Holds the current image resource of the character's sex. Also defines what sex they are
 
@@ -47,25 +50,27 @@ public class CharacterEntity {
         return picData;
     }
 
-    // Initializes a character with default values.
-    public CharacterEntity()
+    // Initializes a character with default values, given a context.
+    public CharacterEntity(Context ctx)
     {
         name = "New Character";
         age = 0;
         description = "A new Character";
+        profilePictureBitmap = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.image_defaultpic);
         setSexImageID("m");
 
         id = UUID.randomUUID().toString();
         categoricalRatings = new Hashtable<String, Integer>();
     }
 
-    // Takes in values to make a custom character
-    public CharacterEntity(String name, int age, String sex, String description)
+    // Takes in values to make a custom character.
+    public CharacterEntity(String name, int age, String sex, String description, Bitmap bm)
     {
         setName(name);
         setAge(age);
         setSexImageID(sex);
         setDescription(description);
+        profilePictureBitmap = bm;
 
         id = UUID.randomUUID().toString();
         categoricalRatings = new Hashtable<String, Integer>();
@@ -191,40 +196,24 @@ public class CharacterEntity {
 
     // Only allows for the sex to be three things. Takes in a String as an argument
     public void setSexImageID(String sex) {
-        switch(sex)
+        if(sex.toLowerCase().equals("male"))
         {
-            case "m":
-                sexImageID = R.drawable.icon_male;
-                break;
-            case "f":
-                sexImageID = R.drawable.icon_female;
-                break;
-            case "b":
-                sexImageID = R.drawable.icon_nonbinary;
-                break;
-            default:
-                sexImageID = R.drawable.icon_nonbinary;
+            sexImageID = R.drawable.icon_male;
+        }
+        else if(sex.toLowerCase().equals("female"))
+        {
+            sexImageID = R.drawable.icon_female;
+        }
+        else
+        {
+            sexImageID = R.drawable.icon_nonbinary;
         }
     }
 
     // Another way to set the sexId, but with an id number instead
-    // Also, only allows for three values
     public void setSexImageID(int sexId)
     {
-        switch(sexId)
-        {
-            case 0:
-                sexImageID = R.drawable.icon_male;
-                break;
-            case 1:
-                sexImageID = R.drawable.icon_female;
-                break;
-            case 3:
-                sexImageID = R.drawable.icon_nonbinary;
-                break;
-            default:
-                sexImageID = R.drawable.icon_nonbinary;
-        }
+        sexImageID = sexId;
     }
 
     public void setDescription(String description) {

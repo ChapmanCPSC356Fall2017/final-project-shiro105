@@ -2,7 +2,6 @@ package cpsc356.characterpicker.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,7 +38,12 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditSingleCharacterFragment extends Fragment {
 
+    // This is the arbitrary value we are checking to see if we managed to select a photo
     private static final int SELECT_PHOTO = 100;
+
+    // These are public so the Activity can use these
+    public boolean isNewCharacter;
+    public CharacterEntity currentCharacter;
 
     // All of the widgets that are on this fragment
     private ImageView editCharacterProfile;
@@ -48,11 +52,9 @@ public class EditSingleCharacterFragment extends Fragment {
     private EditText editCharacterDescription;
     private Spinner editCharacterSex;
 
-    // Private variables that are local to this fragment
-    private CharacterEntity currentCharacter;
-
     // Allows us to build an Intent for this fragment
-    public static Intent BuildIntent(CharacterEntity character, Context ctx)
+    // The third parameter tells us if the character is brand new
+    public static Intent BuildIntent(CharacterEntity character, Context ctx, boolean isNewCharacter)
     {
         Intent newIntent = new Intent(ctx, EditSingleCharacterActivity.class);
 
@@ -67,11 +69,23 @@ public class EditSingleCharacterFragment extends Fragment {
             Toast.makeText(ctx, "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
         }
 
+        // We make sure we pass in all of the important information into this fragment
         newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, character.getId());
         newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, character.getName());
         newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_AGE_KEY, character.getAge());
         newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_DESC_KEY, character.getDescription());
         newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_SEX_INDEX, character.getSexIndex());
+
+        // We do a special item placement if the character is new or not, in order to handle discarding
+        // new changes
+        if(isNewCharacter == true)
+        {
+            newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_IS_NEW, true);
+        }
+        else
+        {
+            newIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_IS_NEW, false);
+        }
 
         return newIntent;
     }
@@ -85,7 +99,7 @@ public class EditSingleCharacterFragment extends Fragment {
         currentCharacter = CharacterCollection.GetInstance().getCharacterById(currentCharacterID);
     }
 
-    // We  prepare the view with all of the necessary data and return it.
+    // We prepare the view with all of the necessary data and return it.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -117,6 +131,8 @@ public class EditSingleCharacterFragment extends Fragment {
         editCharacterAge.setText(String.format(Locale.US,"%d", age));
         editCharacterSex.setSelection(sexIndex);
 
+        isNewCharacter = getArguments().getBoolean(ViewSingleCharacterFragment.CHARACTER_IS_NEW);
+
         return currView;
     }
 
@@ -130,7 +146,9 @@ public class EditSingleCharacterFragment extends Fragment {
             case SELECT_PHOTO:
                 if(resultCode == RESULT_OK)
                 {
-                    try{
+                    try
+                    {
+                        // We take advantage of the dialogue that Android has built in
                         Uri selectedImage = data.getData();
                         InputStream imageStream = getContext().getContentResolver().openInputStream(selectedImage);
                         Bitmap yourChosenImage = BitmapFactory.decodeStream(imageStream);
@@ -138,12 +156,8 @@ public class EditSingleCharacterFragment extends Fragment {
                     }
                     catch (FileNotFoundException e)
                     {
-                        Toast.makeText(getContext(), "Unable to find picture", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Unable to find picture...", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else
-                {
-                    Toast.makeText(getContext(), "Unable to display picture", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -165,24 +179,24 @@ public class EditSingleCharacterFragment extends Fragment {
         currentCharacter.setDescription(newDesc);
         currentCharacter.setSexImageID(newSex);
 
-        // In this method, we also put those changes in our database
+        // We also put those changes in our database
         try
         {
-            CharacterDBHelper.GetInstance(getContext()).updateEntry(currentCharacter);
+            CharacterDBHelper.GetInstance().updateEntry(currentCharacter);
+            Toast.makeText(getContext(), "Saved changes! Return to list to see changes.", Toast.LENGTH_SHORT).show();
         }
         catch(IOException e)
         {
             Toast.makeText(getContext(), "Unable to update entry!", Toast.LENGTH_SHORT).show();
         }
 
-        Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
-
-        Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
-        getContext().startActivity(characterViewIntent);
+        // We then fire a new activity so our changes are reflected in the ViewSingleCharacterFragment
+        //Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
+        //getContext().startActivity(characterViewIntent);
         getActivity().finish();
     }
 
-    // This method asks the user to select an image from their Gallery to use for the character
+    // This asks the user to select an image from their Gallery to use for the character
     public void getNewImage()
     {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);

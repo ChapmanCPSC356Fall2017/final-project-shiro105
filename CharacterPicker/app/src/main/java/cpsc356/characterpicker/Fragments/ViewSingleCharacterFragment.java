@@ -48,6 +48,7 @@ public class ViewSingleCharacterFragment extends Fragment {
     public static final String CHARACTER_PIC_BITMAP = "character_pic_bitmap";
     public static final String CHARACTER_SEX_PIC_ID = "character_sex_pic_id";
     public static final String CHARACTER_SEX_INDEX = "character_sex_index";
+    public static final String CHARACTER_IS_NEW = "character_is_new";
 
     // A reference to all of the widgets
     private ImageView characterImage;
@@ -70,7 +71,7 @@ public class ViewSingleCharacterFragment extends Fragment {
         // The bitmap is too large, so we need to downsize it so that it can be passed
         try
         {
-            byte[] picData = character.convertBitMapToByteArray(character.getProfilePictureBitmap());
+            byte[] picData = CharacterEntity.convertBitMapToByteArray(character.getProfilePictureBitmap());
             characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_PIC_BITMAP, picData);
         }
         catch (IOException e)
@@ -78,6 +79,7 @@ public class ViewSingleCharacterFragment extends Fragment {
             Toast.makeText(ctx, "An error with the image has occurred.", Toast.LENGTH_SHORT).show();
         }
 
+        // We prepare the other important data elements in the fragment
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_ID_KEY, character.getId());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_NAME_KEY, character.getName());
         characterViewIntent.putExtra(ViewSingleCharacterFragment.CHARACTER_RATING_KEY, character.getAverageRating());
@@ -136,7 +138,7 @@ public class ViewSingleCharacterFragment extends Fragment {
         characterAverageRating.setText(String.format(Locale.US,"Rating: %3.2f", avRating));
         characterAge.setText(String.format(Locale.US,"Age: %d", age));
 
-        // Now we need to add in the listeners for the rating, since you can change it here
+        // Now we need to add in the listener for the rating, since you can change it here
         characterCurrentRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -146,6 +148,7 @@ public class ViewSingleCharacterFragment extends Fragment {
                     currentCharacter.setNewRating((int)v);
                     float newAvgRating = currentCharacter.getAverageRating();
 
+                    // We update the rating on the screen and hide the bar until the user returns to the character list
                     characterAverageRating.setText(String.format(Locale.US,"Rating: %3.2f", newAvgRating));
                     Toast.makeText(getContext(), "Thanks for the rating!", Toast.LENGTH_SHORT).show();
                     ratingBar.setVisibility(View.GONE);
@@ -171,9 +174,9 @@ public class ViewSingleCharacterFragment extends Fragment {
         switch (item.getItemId())
         {
             case R.id.menu_deleteItem:
-                // We delete the selected character and close this activity
+                // We delete the selected character in our list as well as in out database and close this activity
                 CharacterCollection.GetInstance().getListOfCharacters().remove(currentCharacter);
-                CharacterDBHelper.GetInstance(getContext()).deleteEntry(currentCharacter);
+                CharacterDBHelper.GetInstance().deleteEntry(currentCharacter);
 
                 Toast.makeText(getContext(), "Deleted the Character!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
@@ -181,7 +184,7 @@ public class ViewSingleCharacterFragment extends Fragment {
                 return true;    // We did this because this lets the menu know we handled the action
             case R.id.menu_editItem:
                 // We edit the current character in here
-                Intent characterIntent = EditSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
+                Intent characterIntent = EditSingleCharacterFragment.BuildIntent(currentCharacter, getContext(), false);
                 startActivity(characterIntent);
                 return true;
             default:

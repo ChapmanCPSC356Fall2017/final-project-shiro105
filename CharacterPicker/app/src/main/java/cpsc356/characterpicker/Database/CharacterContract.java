@@ -5,6 +5,7 @@ import android.provider.BaseColumns;
 /**
  * Created by matthewshiroma on 12/10/17.
  * This class creates a new table for the characters. It defines the schema of it as well.
+ * Since this class is declaring things, it doesn't need to have a way to be created
  */
 
 public final class CharacterContract {
@@ -21,6 +22,7 @@ public final class CharacterContract {
     // The SQL statement that drops the table
     public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + CharacterTuple.TABLE_NAME + ";";
 
+    // So that we don't accidentally call on this
     private CharacterContract(){}
 
     // An inner class that keeps the schema of our table

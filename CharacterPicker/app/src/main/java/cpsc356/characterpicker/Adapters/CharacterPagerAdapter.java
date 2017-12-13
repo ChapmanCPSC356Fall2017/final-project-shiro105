@@ -32,7 +32,7 @@ public class CharacterPagerAdapter extends FragmentStatePagerAdapter {
         ViewSingleCharacterFragment fragment = new ViewSingleCharacterFragment();
         Bundle data = new Bundle();
 
-        // The bitmap is too large, so we need to downsize it so that it can be passed
+        // The bitmap is too large, so we need to downsize it so that it can be passed into the fragment
         try
         {
             byte[] picData = CharacterEntity.convertBitMapToByteArray(currCharacter.getProfilePictureBitmap());
