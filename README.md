@@ -24,9 +24,6 @@ By Matthew Shiroma
     - When discarding, an alert pops up, warning the user about their action. If they choose to do so, their changes are unsaved.
 - All changes are saved to a SQLite database, meaning when the user opens the app again, their last changes will be present in the app.    
 
-## Issues
-- After making changes and either saving/discarding them on a character, the current view of the character does not reflect those changes. It only gets updated once the user navigates back to the RecyclerView.
-
 ## References
 - [Picky Landlord](https://github.com/ChapmanCPSC356Fall2017/picky-landlord)
 - [My Item Rankings Assignment](https://github.com/ChapmanCPSC356Fall2017/item-rankings-shiro105)
