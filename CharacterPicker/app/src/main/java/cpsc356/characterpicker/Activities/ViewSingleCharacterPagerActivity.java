@@ -40,4 +40,10 @@ public class ViewSingleCharacterPagerActivity extends AppCompatActivity {
         // We also make sure we only allow for portrait view
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+
+    // This is the back button on the bottom of the screen
+    @Override
+    public void onBackPressed() {
+       // Disables this for this activity, since it causes an issue with the app
+    }
 }

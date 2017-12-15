@@ -201,4 +201,14 @@ public class ViewSingleCharacterFragment extends Fragment {
                 return false;
         }
     }
+
+    // This resets the fragment to have its rating to revert to zero once it reawakens.
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(characterCurrentRating != null)
+        {
+            characterCurrentRating.setRating(0);
+        }
+    }
 }

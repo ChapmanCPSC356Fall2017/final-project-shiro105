@@ -182,7 +182,7 @@ public class EditSingleCharacterFragment extends Fragment {
         try
         {
             CharacterDBHelper.GetInstance().updateEntry(currentCharacter);
-            Toast.makeText(getContext(), "Saved changes! Return to list to see changes.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT).show();
         }
         catch(IOException e)
         {
@@ -190,8 +190,8 @@ public class EditSingleCharacterFragment extends Fragment {
         }
 
         // We then fire a new activity so our changes are reflected in the ViewSingleCharacterFragment
-        //Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
-        //getContext().startActivity(characterViewIntent);
+        Intent characterViewIntent = ViewSingleCharacterFragment.BuildIntent(currentCharacter, getContext());
+        getContext().startActivity(characterViewIntent);
         getActivity().finish();
     }
 
